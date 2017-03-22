@@ -13,15 +13,17 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.Toast;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import org.artoolkit.ar.base.*;
+import org.artoolkit.ar.base.assets.AssetHelper;
 import org.artoolkit.ar.base.camera.CameraEventListener;
 import org.artoolkit.ar.base.camera.CaptureCameraPreview;
 
 import static org.artoolkit.ar.base.camera.CameraPreferencesActivity.TAG;
 
-public class AndroidLauncher extends AndroidApplication implements CameraEventListener {
+public class AndroidLauncher extends AndroidApplication implements CameraEventListener, ARToolKitManager {
 
 	private FrameLayout mainLayout;
 	private CaptureCameraPreview preview;
@@ -32,6 +34,10 @@ public class AndroidLauncher extends AndroidApplication implements CameraEventLi
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		//Las siguientes dos lines son necesaria para poder añadir marcadores de la manera que ARToolKit lo maneja
+		AssetHelper assetHelper = new AssetHelper(getAssets());
+		assetHelper.cacheAssetFolder(this, "Data");
+
 		mainLayout = new FrameLayout(this);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		config.r = 8;
@@ -46,7 +52,7 @@ public class AndroidLauncher extends AndroidApplication implements CameraEventLi
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
-		gameView = initializeForView(new main(), config);
+		gameView = initializeForView(new main(this), config);
 
 		if(graphics.getView() instanceof SurfaceView){
 			SurfaceView glView = (SurfaceView)graphics.getView();
@@ -120,5 +126,21 @@ public class AndroidLauncher extends AndroidApplication implements CameraEventLi
 	@Override
 	public void cameraPreviewStopped() {
 		ARToolKit.getInstance().cleanup();
+	}
+
+
+	@Override
+	public boolean marcadorVisible(int marcadorId) {
+		return ARToolKit.getInstance().queryMarkerVisible(marcadorId);
+	}
+
+	@Override
+	public int cargarMarcador(String config) {
+		return ARToolKit.getInstance().addMarker(config);
+	}
+
+	@Override
+	public boolean puedeAgregarMarcador(){
+		return false;
 	}
 }
