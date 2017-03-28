@@ -6,5 +6,5 @@ package org.glud.ar;
 public interface ARToolKitManager {
     boolean marcadorVisible(int marcadorId); //Is marker visible?
     int cargarMarcador(String config);
-    boolean puedeAgregarMarcador();
+    int obtenerMarcador();
 }

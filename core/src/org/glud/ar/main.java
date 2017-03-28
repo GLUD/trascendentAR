@@ -24,13 +24,13 @@ public class main extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");
 		//cargar macardor
-		marcadorId = arToolKitManager.cargarMarcador("single;Data/hiro.patt;80");
-		Gdx.app.debug(TAG,"Marcador ID = "+marcadorId);
-		if(marcadorId < 0){
-			Gdx.app.error(TAG,"marcador no cargado");
-		}else {
-			Gdx.app.debug(TAG,"marcador cargado");
-		}
+//		marcadorId = arToolKitManager.cargarMarcador("single;Data/hiro.patt;80");
+//		Gdx.app.debug(TAG,"Marcador ID = "+marcadorId);
+//		if(marcadorId < 0){
+//			Gdx.app.error(TAG,"marcador no cargado");
+//		}else {
+//			Gdx.app.debug(TAG,"marcador cargado");
+//		}
 	}
 
 	@Override
@@ -38,12 +38,9 @@ public class main extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0, 0, 0, 0);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		Gdx.app.debug(TAG,"Marcador visible?= "+arToolKitManager.marcadorVisible(marcadorId));
-		if(arToolKitManager.marcadorVisible(marcadorId)) {
-			Gdx.app.debug(TAG,"Marcador visible");
-			batch.begin();
-			batch.draw(img, 0, 0);
-			batch.end();
-		}
+		batch.begin();
+		batch.draw(img, 0, 0);
+		batch.end();
 	}
 	
 	@Override

@@ -29,6 +29,7 @@ public class AndroidLauncher extends AndroidApplication implements CameraEventLi
 	private CaptureCameraPreview preview;
 	private View gameView;
 	private boolean firstUpdate = false;
+	int marcadorId = -1;
 
 
 	@Override
@@ -105,6 +106,12 @@ public class AndroidLauncher extends AndroidApplication implements CameraEventLi
 	}
 
 	@Override
+	protected void onStop() {
+		super.onStop();
+		ARToolKit.getInstance().cleanup();
+	}
+
+	@Override
 	public void cameraPreviewStarted(int width, int height, int rate, int cameraIndex, boolean cameraIsFrontFacing) {
 		if (ARToolKit.getInstance().initialiseAR(width, height, "Data/camera_para.dat", cameraIndex, cameraIsFrontFacing)) { // Expects Data to be already in the cache dir. This can be done with the AssetUnpacker.
 			Log.i(TAG, "getGLView(): Camera initialised");
@@ -120,8 +127,29 @@ public class AndroidLauncher extends AndroidApplication implements CameraEventLi
 	}
 
 	@Override
-	public void cameraPreviewFrame(byte[] bytes) {
+	public void cameraPreviewFrame(byte[] frame) {
+		if(this.firstUpdate) {
+			if(this.configureARScene()) {
+				Log.i("ARActivity", "Scene configured successfully");
+			} else {
+				Log.e("ARActivity", "Error configuring scene. Cannot continue.");
+				this.finish();
+			}
+
+			this.firstUpdate = false;
+		}
+
+		if(ARToolKit.getInstance().convertAndDetect(frame)) {
+			Log.i("ARActivity", "Convert and detect frame");
+
+			this.onFrameProcessed();
+		}
 	}
+
+	public void onFrameProcessed() {
+	}
+
+
 
 	@Override
 	public void cameraPreviewStopped() {
@@ -134,13 +162,23 @@ public class AndroidLauncher extends AndroidApplication implements CameraEventLi
 		return ARToolKit.getInstance().queryMarkerVisible(marcadorId);
 	}
 
-	@Override
+	private boolean configureARScene() {
+		marcadorId = ARToolKit.getInstance().addMarker("single;Data/hiro.patt;80");
+		Log.d(TAG,"Marcador ID = "+marcadorId);
+		if(marcadorId < 0){
+			Log.e(TAG,"marcador no cargado");
+		}else {
+			Log.i(TAG,"marcador cargado");
+			return true;
+		}
+		return false;
+	}
 	public int cargarMarcador(String config) {
 		return ARToolKit.getInstance().addMarker(config);
 	}
 
 	@Override
-	public boolean puedeAgregarMarcador(){
-		return false;
+	public int obtenerMarcador(){
+		return marcadorId;
 	}
 }
