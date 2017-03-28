@@ -106,8 +106,8 @@ public class AndroidLauncher extends AndroidApplication implements CameraEventLi
 	}
 
 	@Override
-	protected void onStop() {
-		super.onStop();
+	protected void onDestroy() {
+		super.onDestroy();
 		ARToolKit.getInstance().cleanup();
 	}
 
