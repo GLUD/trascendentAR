@@ -34,8 +34,8 @@ public class AndroidLauncher extends AndroidApplication implements CameraEventLi
 		super.onCreate(savedInstanceState);
 		mainLayout = new FrameLayout(this);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-		config.r = 8;
 		config.g = 8;
+		config.r = 8;
 		config.b = 8;
 		config.a = 8;
 
@@ -47,7 +47,7 @@ public class AndroidLauncher extends AndroidApplication implements CameraEventLi
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
 		gameView = initializeForView(new main(), config);
-
+//		initialize(new main(),config);
 		if(graphics.getView() instanceof SurfaceView){
 			SurfaceView glView = (SurfaceView)graphics.getView();
 			glView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
@@ -55,70 +55,93 @@ public class AndroidLauncher extends AndroidApplication implements CameraEventLi
 
 		setContentView(mainLayout);
 	}
-
-	@Override
-	protected void onStart() {
-		super.onStart();
-		Log.i(TAG, "onStart(): Activity starting.");
-
-		if (ARToolKit.getInstance().initialiseNative(this.getCacheDir().getAbsolutePath()) == false) { // Use cache directory for Data files.
-
-			new AlertDialog.Builder(this)
-					.setMessage("The native library is not loaded. The application cannot continue.")
-					.setTitle("Error")
-					.setCancelable(true)
-					.setNeutralButton(android.R.string.cancel,
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog, int whichButton) {
-									finish();
-								}
-							})
-					.show();
-
-			return;
-		}
-	}
-
+//
+//	@Override
+//	protected void onStart() {
+//		super.onStart();
+//		Log.i(TAG, "onStart(): Activity starting.");
+//
+//		if (ARToolKit.getInstance().initialiseNative(this.getCacheDir().getAbsolutePath()) == false) { // Use cache directory for Data files.
+//
+//			new AlertDialog.Builder(this)
+//					.setMessage("The native library is not loaded. The application cannot continue.")
+//					.setTitle("Error")
+//					.setCancelable(true)
+//					.setNeutralButton(android.R.string.cancel,
+//							new DialogInterface.OnClickListener() {
+//								public void onClick(DialogInterface dialog, int whichButton) {
+//									finish();
+//								}
+//							})
+//					.show();
+//
+//			return;
+//		}
+//	}
+//
 	@Override
 	protected void onPause() {
 		super.onPause();
 		mainLayout.removeView(gameView);
 		mainLayout.removeView(preview);
 	}
-
-	@Override
+//
+//	@Override
 	protected void onResume() {
 		super.onResume();
-		//Crea la view de la camara
+//		//Crea la view de la camara
 		preview = new CaptureCameraPreview(this, this);
 
-		//Añade las views al layout
-		mainLayout.addView(preview,new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
-		mainLayout.addView(gameView,new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+//		//Añade las views al layout
 
+//		FrameLayout.LayoutParams params =
+//				new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
+//						FrameLayout.LayoutParams.WRAP_CONTENT);
+//		params.addRule(FrameLayout.ALIGN_PARENT_TOP);
+//		params.addRule(FrameLayout.ALIGN_PARENT_RIGHT);
+		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.FILL_PARENT,FrameLayout.LayoutParams.FILL_PARENT);
+
+		mainLayout.addView(gameView,params);
+		mainLayout.addView(preview,params);
+//
 	}
 
 	@Override
-	public void cameraPreviewStarted(int width, int height, int rate, int cameraIndex, boolean cameraIsFrontFacing) {
-		if (ARToolKit.getInstance().initialiseAR(width, height, "Data/camera_para.dat", cameraIndex, cameraIsFrontFacing)) { // Expects Data to be already in the cache dir. This can be done with the AssetUnpacker.
-			Log.i(TAG, "getGLView(): Camera initialised");
-		} else {
-			// Error
-			Log.e(TAG, "getGLView(): Error initialising camera. Cannot continue.");
-			finish();
-		}
+	public void cameraPreviewStarted(int i, int i1, int i2, int i3, boolean b) {
 
-		Toast.makeText(this, "Camera settings: " + width + "x" + height + "@" + rate + "fps", Toast.LENGTH_SHORT).show();
-
-		firstUpdate = true;
 	}
 
 	@Override
 	public void cameraPreviewFrame(byte[] bytes) {
+
 	}
 
 	@Override
 	public void cameraPreviewStopped() {
-		ARToolKit.getInstance().cleanup();
+
 	}
+//
+//	@Override
+//	public void cameraPreviewStarted(int width, int height, int rate, int cameraIndex, boolean cameraIsFrontFacing) {
+//		if (ARToolKit.getInstance().initialiseAR(width, height, "Data/camera_para.dat", cameraIndex, cameraIsFrontFacing)) { // Expects Data to be already in the cache dir. This can be done with the AssetUnpacker.
+//			Log.i(TAG, "getGLView(): Camera initialised");
+//		} else {
+//			// Error
+//			Log.e(TAG, "getGLView(): Error initialising camera. Cannot continue.");
+//			finish();
+//		}
+//
+//		Toast.makeText(this, "Camera settings: " + width + "x" + height + "@" + rate + "fps", Toast.LENGTH_SHORT).show();
+//
+//		firstUpdate = true;
+//	}
+//
+//	@Override
+//	public void cameraPreviewFrame(byte[] bytes) {
+//	}
+//
+//	@Override
+//	public void cameraPreviewStopped() {
+//		ARToolKit.getInstance().cleanup();
+//	}
 }
