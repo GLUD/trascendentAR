@@ -99,9 +99,10 @@ public class AndroidLauncher extends AndroidApplication implements CameraEventLi
 		//Crea la view de la camara
 		preview = new CaptureCameraPreview(this, this);
 
+		FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.MATCH_PARENT);
 		//Añade las views al layout
-		mainLayout.addView(preview,new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
-		mainLayout.addView(gameView,new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+		mainLayout.addView(gameView,layoutParams);
+		mainLayout.addView(preview,layoutParams);
 
 	}
 
