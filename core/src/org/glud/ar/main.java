@@ -3,6 +3,7 @@ package org.glud.ar;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -12,6 +13,7 @@ public class main extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
 	ARToolKitManager arToolKitManager;
+	Music musica;
 	int marcadorId;
 
 	public main(ARToolKitManager arToolKitManager){
@@ -23,6 +25,8 @@ public class main extends ApplicationAdapter {
 		Gdx.app.setLogLevel(Application.LOG_DEBUG);
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");
+		musica = Gdx.audio.newMusic(Gdx.files.internal("musica.ogg"));
+		musica.setLooping(true);
 		//cargar macardor
 //		marcadorId = arToolKitManager.cargarMarcador("single;Data/hiro.patt;80");
 //		Gdx.app.debug(TAG,"Marcador ID = "+marcadorId);
@@ -37,7 +41,11 @@ public class main extends ApplicationAdapter {
 	public void render () {
 		Gdx.gl.glClearColor(0, 0, 0, 0);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		Gdx.app.debug(TAG,"Marcador visible?= "+arToolKitManager.marcadorVisible(marcadorId));
+		if(arToolKitManager.marcadorVisible(marcadorId)){
+			if(!musica.isPlaying()) musica.play();
+		}else{
+			if(musica.isPlaying()) musica.pause();
+		}
 		batch.begin();
 		batch.draw(img, 0, 0);
 		batch.end();
