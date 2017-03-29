@@ -29,7 +29,7 @@ public class main extends ApplicationAdapter {
 	public void create () {
 		Gdx.app.setLogLevel(Application.LOG_DEBUG);
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+		img = new Texture("musica.png");
 		musica = Gdx.audio.newMusic(Gdx.files.internal("musica.ogg"));
 		musica.setLooping(true);
 		posicion = new Vector2(Gdx.graphics.getWidth()*0.5f - img.getWidth()*0.5f ,
