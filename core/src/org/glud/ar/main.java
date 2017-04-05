@@ -56,6 +56,7 @@ public class main extends ApplicationAdapter {
 	Label label;
 	Image music_img;
 	Timer timer;
+	Vector3 tmp = new Vector3();
 
 	Vector3 object_position = new Vector3();
 	Vector3 object_scale = new Vector3();
@@ -146,7 +147,6 @@ public class main extends ApplicationAdapter {
 			matriz_transformacion.set(arToolKitManager.getTransformMatrix(marcadorId));
 			matriz_proyeccion.set(arToolKitManager.getProjectionMatrix());
 //			matriz_transformacion.row_switch();
-			matriz_transformacion.rotate(1,0,0,90);
 			print_info();
 			if(!musica.isPlaying()) {
 				musica.play();
@@ -156,10 +156,17 @@ public class main extends ApplicationAdapter {
 				musica.setVolume(volumen);
 			}
 			//Render
+			matriz_transformacion.getTranslation(tmp);
+			float z = tmp.z;
+			tmp.scl(-1);
+			tmp.z = 10;
 			camera.projection.set(arToolKitManager.getProjectionMatrix());
+			camera.position.set(tmp);
 			camera.update();
+			matriz_transformacion.rotate(1,0,0,90);
 			for(ModelInstance instance : instanceArray){
 				instance.transform.set(matriz_transformacion);
+//				instance.transform.setTranslation(0,0,z);
 				instance.calculateTransforms();
 			}
 			batch_3d.begin(camera);
