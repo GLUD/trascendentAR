@@ -20,12 +20,15 @@ import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.FloatArray;
 import com.badlogic.gdx.utils.StringBuilder;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+
+import static com.badlogic.gdx.Gdx.gl;
 
 public class main extends ApplicationAdapter {
 	final static String TAG = "AR Application";
@@ -45,11 +48,13 @@ public class main extends ApplicationAdapter {
 	Environment environment;
 	Array<ModelInstance> instanceArray;
 	AssetManager manager;
-	String model_name = "palmera.g3dj";
+	String model_name = "axis.g3dj";
 	boolean loading = true;
 	Matrix4 matriz_transformacion = new Matrix4();
+	Matrix4 matriz_proyeccion = new Matrix4();
 	Stage stage;
 	Label label;
+	Image music_img;
 	Timer timer;
 
 	Vector3 object_position = new Vector3();
@@ -77,7 +82,7 @@ public class main extends ApplicationAdapter {
 		//3D
 
 		camera = new AR_Camera(67,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-		camera.position.set(10f,10f,10f);
+		camera.position.set(0f,0f,10f);
 		camera.lookAt(0,0,0);
 		camera.near = 1f;
 		camera.far = 300f;
@@ -97,10 +102,16 @@ public class main extends ApplicationAdapter {
 		stage = new Stage(new StretchViewport(640,360),batch);
 		Label.LabelStyle labelStyle = new Label.LabelStyle(new BitmapFont(), Color.YELLOW);
 		label = new Label("",labelStyle);
-		label.setPosition(0,200);
+		label.setPosition(0,50);
 		label.setWrap(true);
 		label.setText(matriz_transformacion.toString());
+
+		music_img = new Image(img);
+		music_img.setSize(50,50);
+		music_img.setPosition(0,stage.getHeight()-music_img.getHeight());
+		music_img.setVisible(false);
 		stage.addActor(label);
+		stage.addActor(music_img);
 
 		stringBuilder = new StringBuilder();
 
@@ -123,12 +134,19 @@ public class main extends ApplicationAdapter {
 
 	@Override
 	public void render () {
+
+		if(loading && manager.update()){
+			done_loading();
+		}
 		delta = Gdx.graphics.getDeltaTime();
-		Gdx.gl.glClearColor(0, 0, 0, 0);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+		gl.glClearColor(0, 0, 0, 0);
+		gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
 		if(arToolKitManager.marcadorVisible(marcadorId)){
 			matriz_transformacion.set(arToolKitManager.getTransformMatrix(marcadorId));
+			matriz_proyeccion.set(arToolKitManager.getProjectionMatrix());
+//			matriz_transformacion.row_switch();
+			matriz_transformacion.rotate(1,0,0,90);
 			print_info();
 			if(!musica.isPlaying()) {
 				musica.play();
@@ -137,9 +155,6 @@ public class main extends ApplicationAdapter {
 				volumen += 0.5*delta;
 				musica.setVolume(volumen);
 			}
-			batch.begin();
-			batch.draw(img,posicion.x,posicion.y);
-			batch.end();
 			//Render
 			camera.projection.set(arToolKitManager.getProjectionMatrix());
 			camera.update();
@@ -150,7 +165,10 @@ public class main extends ApplicationAdapter {
 			batch_3d.begin(camera);
 			batch_3d.render(instanceArray,environment);
 			batch_3d.end();
+
+			if(!music_img.isVisible()) music_img.setVisible(true);
 		}else{
+			if(music_img.isVisible()) music_img.setVisible(false);
 			if(musica.isPlaying()) {
 				volumen -= 0.5*delta;
 				musica.setVolume(volumen);
@@ -158,9 +176,6 @@ public class main extends ApplicationAdapter {
 					musica.pause();
 				}
 			}
-		}
-		if(loading && manager.update()){
-			done_loading();
 		}
 		stage.act();
 		stage.draw();
@@ -189,18 +204,13 @@ public class main extends ApplicationAdapter {
 		matriz_transformacion.getRotation(object_rotation);
 
 		stringBuilder.setLength(0);
-		stringBuilder.append("DETALLES DEL MARCADOR:");
-		stringBuilder.append("\nPosicion: "+object_position);
-		stringBuilder.append("\nEscala: "+object_scale);
-		stringBuilder.append("\nRotacion: "+object_rotation);
+		stringBuilder.append(matriz_proyeccion.toString());
+//		stringBuilder.append("DETALLES DEL MARCADOR:");
+//		stringBuilder.append("\nPosicion: "+object_position);
+//		stringBuilder.append("\nEscala: "+object_scale);
+//		stringBuilder.append("\nRotacion: "+object_rotation);
 
 		label.setText(stringBuilder);
-
-		/*
-		matriz_transformacion.set(arToolKitManager.getTransformMatrix(marcadorId));
-		Gdx.app.debug(TAG,"=========================================");
-		Gdx.app.debug(TAG,"\n"+matriz_transformacion.toString());
-		*/
 	}
 
 }
