@@ -164,7 +164,7 @@ public class AndroidLauncher extends AndroidApplication implements CameraEventLi
 	}
 
 	private boolean configureARScene() {
-		marcadorId = ARToolKit.getInstance().addMarker("single;Data/hiro.patt;80");
+		marcadorId = ARToolKit.getInstance().addMarker("single;Data/hiro.patt;2.1294103");
 		Log.d(TAG,"Marcador ID = "+marcadorId);
 		if(marcadorId < 0){
 			Log.e(TAG,"marcador no cargado");
@@ -181,5 +181,15 @@ public class AndroidLauncher extends AndroidApplication implements CameraEventLi
 	@Override
 	public int obtenerMarcador(){
 		return marcadorId;
+	}
+
+	@Override
+	public float[] getProjectionMatrix() {
+		return ARToolKit.getInstance().getProjectionMatrix();
+	}
+
+	@Override
+	public float[] getTransformMatrix(int marcadorId) {
+		return ARToolKit.getInstance().queryMarkerTransformation(marcadorId);
 	}
 }
