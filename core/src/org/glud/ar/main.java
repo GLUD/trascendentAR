@@ -83,7 +83,7 @@ public class main extends ApplicationAdapter {
 		//3D
 
 		camera = new AR_Camera(67,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-		camera.position.set(0f,0f,10f);
+		camera.position.set(0f,0f,1f);
 		camera.lookAt(0,0,0);
 		camera.near = 1f;
 		camera.far = 300f;
@@ -157,17 +157,16 @@ public class main extends ApplicationAdapter {
 			}
 			//Render
 			matriz_transformacion.getTranslation(tmp);
-			float z = tmp.z;
 			tmp.scl(-1);
-			tmp.z = 10;
-			camera.projection.set(arToolKitManager.getProjectionMatrix());
+			camera.projection.set(matriz_proyeccion);
+			if(Gdx.input.isTouched())tmp.add(1,0,0);
 			camera.position.set(tmp);
 			camera.update();
 			matriz_transformacion.rotate(1,0,0,90);
 			for(ModelInstance instance : instanceArray){
 				instance.transform.set(matriz_transformacion);
 //				instance.transform.setTranslation(0,0,z);
-				instance.calculateTransforms();
+//				instance.calculateTransforms();
 			}
 			batch_3d.begin(camera);
 			batch_3d.render(instanceArray,environment);
@@ -211,7 +210,7 @@ public class main extends ApplicationAdapter {
 		matriz_transformacion.getRotation(object_rotation);
 
 		stringBuilder.setLength(0);
-		stringBuilder.append(matriz_proyeccion.toString());
+		stringBuilder.append(matriz_transformacion.toString());
 //		stringBuilder.append("DETALLES DEL MARCADOR:");
 //		stringBuilder.append("\nPosicion: "+object_position);
 //		stringBuilder.append("\nEscala: "+object_scale);
