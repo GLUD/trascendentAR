@@ -48,7 +48,7 @@ public class main extends ApplicationAdapter {
 	Environment environment;
 	Array<ModelInstance> instanceArray;
 	AssetManager manager;
-	String model_name = "axis.g3dj";
+	String model_name = "nature.g3dj";
 	boolean loading = true;
 	Matrix4 matriz_transformacion = new Matrix4();
 	Matrix4 matriz_proyeccion = new Matrix4();
@@ -102,10 +102,9 @@ public class main extends ApplicationAdapter {
 		//UI
 		stage = new Stage(new StretchViewport(640,360),batch);
 		Label.LabelStyle labelStyle = new Label.LabelStyle(new BitmapFont(), Color.YELLOW);
-		label = new Label("",labelStyle);
+		label = new Label("BIENVENIDO A TRASCENDENTAR",labelStyle);
 		label.setPosition(0,50);
 		label.setWrap(true);
-		label.setText(matriz_transformacion.toString());
 
 		music_img = new Image(img);
 		music_img.setSize(50,50);
@@ -147,7 +146,6 @@ public class main extends ApplicationAdapter {
 			matriz_transformacion.set(arToolKitManager.getTransformMatrix(marcadorId));
 			matriz_proyeccion.set(arToolKitManager.getProjectionMatrix());
 //			matriz_transformacion.row_switch();
-			print_info();
 			if(!musica.isPlaying()) {
 				musica.play();
 			}
@@ -183,6 +181,7 @@ public class main extends ApplicationAdapter {
 				}
 			}
 		}
+		print_info();
 		stage.act();
 		stage.draw();
 	}
@@ -210,7 +209,13 @@ public class main extends ApplicationAdapter {
 		matriz_transformacion.getRotation(object_rotation);
 
 		stringBuilder.setLength(0);
-		stringBuilder.append(matriz_transformacion.toString());
+		stringBuilder.append("\nFPS: ");
+		stringBuilder.append(Gdx.graphics.getFramesPerSecond());
+		if(arToolKitManager.marcadorVisible(marcadorId)){
+			stringBuilder.append("\nMarcador visible");
+		}else{
+			stringBuilder.append("\nMarcador no visible");
+		}
 //		stringBuilder.append("DETALLES DEL MARCADOR:");
 //		stringBuilder.append("\nPosicion: "+object_position);
 //		stringBuilder.append("\nEscala: "+object_scale);
