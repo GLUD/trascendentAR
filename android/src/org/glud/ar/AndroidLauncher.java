@@ -164,7 +164,7 @@ public class AndroidLauncher extends AndroidApplication implements CameraEventLi
 	}
 
 	private boolean configureARScene() {
-		marcadorId = ARToolKit.getInstance().addMarker("single;Data/hiro.patt;500");
+		marcadorId = ARToolKit.getInstance().addMarker("single;Data/hiro.patt;8");
 		Log.d(TAG,"Marcador ID = "+marcadorId);
 		if(marcadorId < 0){
 			Log.e(TAG,"marcador no cargado");

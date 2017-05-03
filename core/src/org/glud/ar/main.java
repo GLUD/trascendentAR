@@ -85,8 +85,8 @@ public class main extends ApplicationAdapter {
 		camera = new AR_Camera(67,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 		camera.position.set(0f,0f,1f);
 		camera.lookAt(0,0,0);
-		camera.near = 1f;
-		camera.far = 300f;
+		camera.near = 0;
+		camera.far = 1000f;
 		camera.update();
 		manager = new AssetManager();
 		manager.load(model_name,Model.class);
@@ -101,7 +101,7 @@ public class main extends ApplicationAdapter {
 
 		//UI
 		stage = new Stage(new StretchViewport(640,360),batch);
-		Label.LabelStyle labelStyle = new Label.LabelStyle(new BitmapFont(), Color.YELLOW);
+		Label.LabelStyle labelStyle = new Label.LabelStyle(new BitmapFont(), Color.GREEN);
 		label = new Label("BIENVENIDO A TRASCENDENTAR",labelStyle);
 		label.setPosition(0,50);
 		label.setWrap(true);
