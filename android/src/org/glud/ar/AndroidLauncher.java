@@ -30,6 +30,7 @@ public class AndroidLauncher extends AndroidApplication implements CameraEventLi
 	private View gameView;
 	private boolean firstUpdate = false;
 	int marcadorId = -1;
+	int marcadorId2 = -1;
 
 
 	@Override
@@ -165,6 +166,7 @@ public class AndroidLauncher extends AndroidApplication implements CameraEventLi
 
 	private boolean configureARScene() {
 		marcadorId = ARToolKit.getInstance().addMarker("single;Data/hiro.patt;8");
+		marcadorId2 = ARToolKit.getInstance().addMarker("single;Data/kanji.patt;8");
 		Log.d(TAG,"Marcador ID = "+marcadorId);
 		if(marcadorId < 0){
 			Log.e(TAG,"marcador no cargado");
@@ -181,6 +183,11 @@ public class AndroidLauncher extends AndroidApplication implements CameraEventLi
 	@Override
 	public int obtenerMarcador(){
 		return marcadorId;
+	}
+
+	@Override
+	public int obtenerMarcador2(){
+		return marcadorId2;
 	}
 
 	@Override

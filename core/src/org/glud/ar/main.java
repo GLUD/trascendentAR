@@ -38,7 +38,7 @@ public class main extends ApplicationAdapter {
 	Music musica;
 	float volumen;
 	float delta;
-	int marcadorId;
+	int marcadorId, marcadorId2;
 	Vector2 posicion;
 
 	AR_Camera camera;
@@ -47,6 +47,7 @@ public class main extends ApplicationAdapter {
 	ModelInstance modelInstance;
 	Environment environment;
 	Array<ModelInstance> instanceArray;
+	Array<ModelInstance> tmpArray;
 	AssetManager manager;
 	String model_name = "nature.g3dj";
 	boolean loading = true;
@@ -90,8 +91,10 @@ public class main extends ApplicationAdapter {
 		camera.update();
 		manager = new AssetManager();
 		manager.load(model_name,Model.class);
+		manager.load("adventurer.g3db",Model.class);
 
 		instanceArray = new Array<ModelInstance>();
+		tmpArray = new Array<ModelInstance>();
 		batch_3d = new ModelBatch();
 
 		//Adding lights
@@ -134,7 +137,7 @@ public class main extends ApplicationAdapter {
 
 	@Override
 	public void render () {
-
+		marcadorId = arToolKitManager.obtenerMarcador();
 		if(loading && manager.update()){
 			done_loading();
 		}
@@ -181,15 +184,42 @@ public class main extends ApplicationAdapter {
 				}
 			}
 		}
+		renderMan();
 		print_info();
 		stage.act();
 		stage.draw();
+	}
+
+	private void renderMan() {
+		marcadorId2 = arToolKitManager.obtenerMarcador2();
+		if (arToolKitManager.marcadorVisible(marcadorId2)) {
+			matriz_transformacion.set(arToolKitManager.getTransformMatrix(marcadorId2));
+			matriz_proyeccion.set(arToolKitManager.getProjectionMatrix());
+			//Render
+			matriz_transformacion.getTranslation(tmp);
+			tmp.scl(-1);
+			camera.projection.set(matriz_proyeccion);
+			if (Gdx.input.isTouched()) tmp.add(1, 0, 0);
+			camera.position.set(tmp);
+			camera.update();
+			matriz_transformacion.rotate(1, 0, 0, 0);
+			for (ModelInstance instance : tmpArray) {
+				instance.transform.set(matriz_transformacion);
+			}
+			batch_3d.begin(camera);
+			batch_3d.render(tmpArray, environment);
+			batch_3d.end();
+
+			if (!music_img.isVisible()) music_img.setVisible(true);
+		}
 	}
 
 	private void done_loading(){
 		model = manager.get(model_name);
 		modelInstance = new ModelInstance(model);
 		instanceArray.add(modelInstance);
+		modelInstance = new ModelInstance(manager.get("adventurer.g3db",Model.class));
+		tmpArray.add(modelInstance);
 		loading=false;
 	}
 	
@@ -212,9 +242,14 @@ public class main extends ApplicationAdapter {
 		stringBuilder.append("\nFPS: ");
 		stringBuilder.append(Gdx.graphics.getFramesPerSecond());
 		if(arToolKitManager.marcadorVisible(marcadorId)){
-			stringBuilder.append("\nMarcador visible");
+			stringBuilder.append("\nMarcador1 visible");
 		}else{
-			stringBuilder.append("\nMarcador no visible");
+			stringBuilder.append("\nMarcador1 no visible");
+		}
+		if(arToolKitManager.marcadorVisible(marcadorId2)){
+			stringBuilder.append("\nMarcador2 visible");
+		}else{
+			stringBuilder.append("\nMarcador2 no visible");
 		}
 //		stringBuilder.append("DETALLES DEL MARCADOR:");
 //		stringBuilder.append("\nPosicion: "+object_position);

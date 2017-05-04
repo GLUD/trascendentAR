@@ -7,6 +7,7 @@ public interface ARToolKitManager {
     boolean marcadorVisible(int marcadorId); //Is marker visible?
     int cargarMarcador(String config);
     int obtenerMarcador();
+    int obtenerMarcador2();
     float[] getProjectionMatrix();
     float[] getTransformMatrix(int marcadorId);
 }
