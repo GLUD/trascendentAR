@@ -34,7 +34,7 @@ public class AndroidLauncher extends AndroidApplication implements CameraEventLi
 	private CaptureCameraPreview preview;
 	private View gameView;
 	private boolean firstUpdate = false;
-	private ArrayMap<String,Integer> markers = new ArrayMap<String, Integer>();
+	private ArrayMap<String,Integer> markers = new ArrayMap<>();
 
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
@@ -160,15 +160,15 @@ public class AndroidLauncher extends AndroidApplication implements CameraEventLi
 	}
 
 	private boolean configureARScene() {
-		loadMarker("wolf",MarkerType.SINGLE,"Data/Hiro.patt",8);
-		loadMarker("adventurer",MarkerType.SINGLE,"Data/kanji.patt",8);
+		loadMarker("wolf",MarkerType.SINGLE,"Data/hiro.patt",8);
+		loadMarker("kokopelli",MarkerType.SINGLE,"Data/kanji.patt",8);
 		return true;
 	}
 
 	private void loadMarker(String name, String type, String path, float size){
 		int markerID = -1;
 		markerID = ARToolKit.getInstance().addMarker(type+";"+path+";"+size);
-		if(markerID < 0) markers.put(name,markerID);
+		if(markerID >= 0) markers.put(name,markerID);
 		else Log.i("ARActivity","Marker"+name+" not loaded");
 	}
 
@@ -200,5 +200,10 @@ public class AndroidLauncher extends AndroidApplication implements CameraEventLi
 	@Override
 	public float[] getTransformMatrix(int marcadorId) {
 		return ARToolKit.getInstance().queryMarkerTransformation(marcadorId);
+	}
+
+	@Override
+	public float[] getTransformMatrix(String markerName) {
+		return ARToolKit.getInstance().queryMarkerTransformation(markers.get(markerName));
 	}
 }

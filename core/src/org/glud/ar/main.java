@@ -39,8 +39,11 @@ public class main extends ApplicationAdapter {
 	ModelBatch batch_3d;
 	Environment environment;
 
-	ArrayMap<Integer,ARModelInstance> instances;
+	ArrayMap<String,ModelInstance> instances;
 	Array<AnimationController> animationControllers;
+
+	Matrix4 transform = new Matrix4();
+	Vector3 tmp = new Vector3();
 
 	public main(ARToolKitManager arToolKitManager){
 		this.arToolKitManager = arToolKitManager;
@@ -64,20 +67,25 @@ public class main extends ApplicationAdapter {
 		 */
 		manager = new AssetManager();
 		manager.load("wolf.g3db",Model.class);
-		manager.load("adventurer.g3db",Model.class);
+		manager.load("koko.g3db",Model.class);
 		manager.finishLoading(); //Esperar hasta que los recursos  se hayan cargado - Wait until all resources are loaded
 
 		/*
-		 * Crear instacias de los modelos
-		 * Create model instances
+		 * Crear instacias de los modelos.
+		 * Los nombres que se asignen al modelo deben coincidir con los declarados en AndroidLauncher
+		 *
+		 * Create model instances.
+		 * Names given her, must match with the names declared on AndroidLauncher
 		 */
-		instances = new ArrayMap<Integer, ARModelInstance>();
+		instances = new ArrayMap<String, ModelInstance>();
 		Model model;
 
 		model = manager.get("wolf.g3db",Model.class);
-		instances.put(0,new ARModelInstance(model));
-		model = manager.get("adventurer.g3db",Model.class);
-		instances.put(1,new ARModelInstance(model));
+		instances.put("wolf",new ModelInstance(model));
+		model = manager.get("koko.g3db",Model.class);
+		instances.put("kokopelli",new ModelInstance(model));
+
+//		model.dispose();
 
 		/*
 		 * Crear controladores de animación si el modelo es animado
@@ -85,7 +93,7 @@ public class main extends ApplicationAdapter {
 		 */
 		animationControllers = new Array<AnimationController>();
 		AnimationController animationController;
-		animationController = new AnimationController(instances.get(0)); //Wolf
+		animationController = new AnimationController(instances.get("wolf")); //Wolf
 		animationController.setAnimation("Wolf_Skeleton|Wolf_Run_Cycle_",-1);
 		animationControllers.add(animationController);
 
@@ -99,46 +107,91 @@ public class main extends ApplicationAdapter {
 
 	@Override
 	public void render () {
+		Gdx.app.debug(TAG,"Rendering");
+
 		float delta = Gdx.graphics.getDeltaTime();
 		gl.glClearColor(0, 0, 0, 0);
 		gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
-		if(arToolKitManager.marcadorVisible(marcadorId)){
+		/*
+		 * Actualizar los controladores de animación
+		 */
+		for (AnimationController controller:animationControllers) {
+			controller.update(delta);
+		}
+
+		/* Actualizar Cámara
+		 * Update camera
+		 */
+		camera.projection.set(arToolKitManager.getProjectionMatrix());
+		/*
+		 * Renderizar los modelos si el marcador está activo
+		 */
+
+		for (String markerName:instances.keys()) {
+
+			if (arToolKitManager.markerVisible(markerName)) {
+				transform.set(arToolKitManager.getTransformMatrix(markerName));
+				/* Actualizar Cámara
+				 * Update camera
+				 */
+				transform.getTranslation(tmp);
+				tmp.scl(-1);
+				camera.position.set(tmp);
+				camera.update();
+
+				/* Dependiendo de las coordenadas del modelo puede necesitar rotarlo
+				 * Depending from model coordinates it may be desired to apply a rotation
+				 */
+				transform.rotate(1,0,0,90);
+				ModelInstance instance = instances.get(markerName);
+				instance.transform.set(transform);
+
+				batch_3d.begin(camera);
+				batch_3d.render(instance,environment);
+				batch_3d.end();
+
+			}
+		}
+
+//		batch_3d.end();
+/*
+		if (arToolKitManager.marcadorVisible(marcadorId)) {
 			matriz_transformacion.set(arToolKitManager.getTransformMatrix(marcadorId));
 			matriz_proyeccion.set(arToolKitManager.getProjectionMatrix());
 //			matriz_transformacion.row_switch();
-			if(!musica.isPlaying()) {
+			if (!musica.isPlaying()) {
 				musica.play();
 			}
-			if(volumen < 0.99) {
-				volumen += 0.5*delta;
+			if (volumen < 0.99) {
+				volumen += 0.5 * delta;
 				musica.setVolume(volumen);
 			}
 			//Render
 			matriz_transformacion.getTranslation(tmp);
 			tmp.scl(-1);
 			camera.projection.set(matriz_proyeccion);
-			if(Gdx.input.isTouched())tmp.add(1,0,0);
+			if (Gdx.input.isTouched()) tmp.add(1, 0, 0);
 			camera.position.set(tmp);
 			camera.update();
-			matriz_transformacion.rotate(1,0,0,90);
-			if(animationController!=null)animationController.update(delta);
-			for(ModelInstance instance : instanceArray){
+			matriz_transformacion.rotate(1, 0, 0, 90);
+			if (animationController != null) animationController.update(delta);
+			for (ModelInstance instance : instanceArray) {
 				instance.transform.set(matriz_transformacion);
 //				instance.transform.setTranslation(0,0,z);
 //				instance.calculateTransforms();
 			}
 			batch_3d.begin(camera);
-			batch_3d.render(instanceArray,environment);
+			batch_3d.render(instanceArray, environment);
 			batch_3d.end();
 
-			if(!music_img.isVisible()) music_img.setVisible(true);
-		}else{
-			if(music_img.isVisible()) music_img.setVisible(false);
-			if(musica.isPlaying()) {
-				volumen -= 0.5*delta;
+			if (!music_img.isVisible()) music_img.setVisible(true);
+		} else {
+			if (music_img.isVisible()) music_img.setVisible(false);
+			if (musica.isPlaying()) {
+				volumen -= 0.5 * delta;
 				musica.setVolume(volumen);
-				if(volumen < 0.001) {
+				if (volumen < 0.001) {
 					musica.pause();
 				}
 			}
@@ -147,21 +200,7 @@ public class main extends ApplicationAdapter {
 		print_info();
 		stage.act();
 		stage.draw();
-	}
-
-	private void done_loading(){
-		model = manager.get(model_name);
-		modelInstance = new ModelInstance(model);
-
-		//Crear controlador de la animación
-		animationController = new AnimationController(modelInstance);
-		animationController.setAnimation("Wolf_Skeleton|Wolf_Run_Cycle_",-1);
-
-
-		instanceArray.add(modelInstance);
-		modelInstance = new ModelInstance(manager.get("adventurer.g3db",Model.class));
-		tmpArray.add(modelInstance);
-		loading=false;
+	*/
 	}
 	
 	@Override
