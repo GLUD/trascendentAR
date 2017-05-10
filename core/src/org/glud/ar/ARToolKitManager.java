@@ -11,5 +11,6 @@ public interface ARToolKitManager {
     int getMarker(String config);
     ArrayMap<String,Integer> getMarkers();
     float[] getProjectionMatrix();
-    float[] getTransformMatrix(int marcadorId);
+    float[] getTransformMatrix(int markerId);
+    float[] getTransformMatrix(String markerName);
 }
