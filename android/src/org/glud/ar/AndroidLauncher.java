@@ -13,9 +13,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.Toast;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+import com.badlogic.gdx.utils.ArrayMap;
 import org.artoolkit.ar.base.*;
 import org.artoolkit.ar.base.assets.AssetHelper;
 import org.artoolkit.ar.base.camera.CameraEventListener;
@@ -25,18 +25,21 @@ import static org.artoolkit.ar.base.camera.CameraPreferencesActivity.TAG;
 
 public class AndroidLauncher extends AndroidApplication implements CameraEventListener, ARToolKitManager {
 
+	static class MarkerType{
+		private static final String SINGLE="single";
+		private static final String MULTI="multi";
+	}
+
 	private FrameLayout mainLayout;
 	private CaptureCameraPreview preview;
 	private View gameView;
 	private boolean firstUpdate = false;
-	int marcadorId = -1;
-	int marcadorId2 = -1;
-
+	private ArrayMap<String,Integer> markers = new ArrayMap<String, Integer>();
 
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//Las siguientes dos lines son necesaria para poder añadir marcadores de la manera que ARToolKit lo maneja
+		//Las siguientes dos lines son necesaria para poder añadir markers de la manera que ARToolKit lo maneja
 		AssetHelper assetHelper = new AssetHelper(getAssets());
 		assetHelper.cacheAssetFolder(this, "Data");
 
@@ -151,43 +154,42 @@ public class AndroidLauncher extends AndroidApplication implements CameraEventLi
 	public void onFrameProcessed() {
 	}
 
-
-
 	@Override
 	public void cameraPreviewStopped() {
 		ARToolKit.getInstance().cleanup();
 	}
 
-
-	@Override
-	public boolean marcadorVisible(int marcadorId) {
-		return ARToolKit.getInstance().queryMarkerVisible(marcadorId);
-	}
-
 	private boolean configureARScene() {
-		marcadorId = ARToolKit.getInstance().addMarker("single;Data/hiro.patt;8");
-		marcadorId2 = ARToolKit.getInstance().addMarker("single;Data/kanji.patt;8");
-		Log.d(TAG,"Marcador ID = "+marcadorId);
-		if(marcadorId < 0){
-			Log.e(TAG,"marcador no cargado");
-		}else {
-			Log.i(TAG,"marcador cargado");
-			return true;
-		}
-		return false;
+		loadMarker("wolf",MarkerType.SINGLE,"Data/Hiro.patt",8);
+		loadMarker("adventurer",MarkerType.SINGLE,"Data/kanji.patt",8);
+		return true;
 	}
-	public int cargarMarcador(String config) {
-		return ARToolKit.getInstance().addMarker(config);
+
+	private void loadMarker(String name, String type, String path, float size){
+		int markerID = -1;
+		markerID = ARToolKit.getInstance().addMarker(type+";"+path+";"+size);
+		if(markerID < 0) markers.put(name,markerID);
+		else Log.i("ARActivity","Marker"+name+" not loaded");
 	}
 
 	@Override
-	public int obtenerMarcador(){
-		return marcadorId;
+	public boolean markerVisible(int markerId) {
+		return ARToolKit.getInstance().queryMarkerVisible(markerId);
 	}
 
 	@Override
-	public int obtenerMarcador2(){
-		return marcadorId2;
+	public boolean markerVisible(String markerName) {
+		return ARToolKit.getInstance().queryMarkerVisible(markers.get(markerName));
+	}
+
+	@Override
+	public int getMarker(String config) {
+		return 0;
+	}
+
+	@Override
+	public ArrayMap<String, Integer> getMarkers() {
+		return markers;
 	}
 
 	@Override

@@ -1,13 +1,17 @@
 package org.glud.ar;
 
 import com.badlogic.gdx.graphics.g3d.Model;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 
 /**
- * Created by glud on 10/05/17.
+ * Created by Juan on 10/05/17.
+ * This class extends the basic ModelInstance adding useful variables to work with Augmented Reality:
+ * Visibility
  */
 public class ARModelInstance extends ModelInstance{
 

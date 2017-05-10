@@ -1,13 +1,15 @@
 package org.glud.ar;
 
+import com.badlogic.gdx.utils.ArrayMap;
+
 /**
  * Created by juan on 3/17/17.
  */
 public interface ARToolKitManager {
-    boolean marcadorVisible(int marcadorId); //Is marker visible?
-    int cargarMarcador(String config);
-    int obtenerMarcador();
-    int obtenerMarcador2();
+    boolean markerVisible(int markerId); //Is marker visible?
+    boolean markerVisible(String markerName); //Is marker visible?
+    int getMarker(String config);
+    ArrayMap<String,Integer> getMarkers();
     float[] getProjectionMatrix();
     float[] getTransformMatrix(int marcadorId);
 }
