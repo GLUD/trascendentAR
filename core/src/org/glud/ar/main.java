@@ -17,6 +17,7 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
+import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -49,7 +50,7 @@ public class main extends ApplicationAdapter {
 	Array<ModelInstance> instanceArray;
 	Array<ModelInstance> tmpArray;
 	AssetManager manager;
-	String model_name = "koko_relax.g3db";
+	String model_name = "wolf.g3db";
 	//String model_name = "nature.g3dj";
 	boolean loading = true;
 	Matrix4 matriz_transformacion = new Matrix4();
@@ -59,6 +60,7 @@ public class main extends ApplicationAdapter {
 	Image music_img;
 	Timer timer;
 	Vector3 tmp = new Vector3();
+	AnimationController animationController;
 
 	Vector3 object_position = new Vector3();
 	Vector3 object_scale = new Vector3();
@@ -166,6 +168,7 @@ public class main extends ApplicationAdapter {
 			camera.position.set(tmp);
 			camera.update();
 			matriz_transformacion.rotate(1,0,0,90);
+			if(animationController!=null)animationController.update(delta);
 			for(ModelInstance instance : instanceArray){
 				instance.transform.set(matriz_transformacion);
 //				instance.transform.setTranslation(0,0,z);
@@ -219,6 +222,12 @@ public class main extends ApplicationAdapter {
 	private void done_loading(){
 		model = manager.get(model_name);
 		modelInstance = new ModelInstance(model);
+
+		//Crear controlador de la animación
+		animationController = new AnimationController(modelInstance);
+		animationController.setAnimation("Wolf_Skeleton|Wolf_Run_Cycle_",-1);
+
+
 		instanceArray.add(modelInstance);
 		modelInstance = new ModelInstance(manager.get("adventurer.g3db",Model.class));
 		tmpArray.add(modelInstance);
