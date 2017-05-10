@@ -49,7 +49,8 @@ public class main extends ApplicationAdapter {
 	Array<ModelInstance> instanceArray;
 	Array<ModelInstance> tmpArray;
 	AssetManager manager;
-	String model_name = "nature.g3dj";
+	String model_name = "koko_relax.g3db";
+	//String model_name = "nature.g3dj";
 	boolean loading = true;
 	Matrix4 matriz_transformacion = new Matrix4();
 	Matrix4 matriz_proyeccion = new Matrix4();
@@ -108,6 +109,7 @@ public class main extends ApplicationAdapter {
 		label = new Label("BIENVENIDO A TRASCENDENTAR",labelStyle);
 		label.setPosition(0,50);
 		label.setWrap(true);
+		label.setVisible(false);
 
 		music_img = new Image(img);
 		music_img.setSize(50,50);
