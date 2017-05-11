@@ -8,7 +8,6 @@ import com.badlogic.gdx.utils.ArrayMap;
 public interface ARToolKitManager {
     boolean markerVisible(int markerId); //Is marker visible?
     boolean markerVisible(String markerName); //Is marker visible?
-    int getMarker(String config);
     ArrayMap<String,Integer> getMarkers();
     float[] getProjectionMatrix();
     float[] getTransformMatrix(int markerId);

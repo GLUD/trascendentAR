@@ -183,11 +183,6 @@ public class AndroidLauncher extends AndroidApplication implements CameraEventLi
 	}
 
 	@Override
-	public int getMarker(String config) {
-		return 0;
-	}
-
-	@Override
 	public ArrayMap<String, Integer> getMarkers() {
 		return markers;
 	}
