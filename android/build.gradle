@@ -19,7 +19,7 @@ android {
     }
     defaultConfig {
         applicationId "org.glud.ar"
-        minSdkVersion 19
+        minSdkVersion 15
         targetSdkVersion 25
     }
 }
