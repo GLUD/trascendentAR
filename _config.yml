@@ -2,14 +2,14 @@
 #
 
 # Site settings
-title: TransendentAR
+title: Transendent-AR
 description:
   Crea aplicaciones de Realidad Aumentada con la mejor Tecnología Libre.
 owner: GLUD - Grupo GNU/Linux Universidad Distrital FJC # or company name
 first_published: 2017 # if migrating another site, the year of your first publish
 email: glud@udistrital.edu.co
 baseurl: "" # the subpath of your site, e.g. /blog
-url: /TransendentAR" # the base hostname & protocol for your site
+url: /Transendent-AR" # the base hostname & protocol for your site
 social:
   twitter: https://twitter.com/GrupoLinuxUD/
   github: https://github.com/GLUD
