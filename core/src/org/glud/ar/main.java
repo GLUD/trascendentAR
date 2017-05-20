@@ -14,6 +14,8 @@ import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.utils.*;
+import org.glud.trascendentAR.ARCamera;
+import org.glud.trascendentAR.ARToolKitManager;
 
 import static com.badlogic.gdx.Gdx.gl;
 
@@ -35,13 +37,13 @@ public class main extends ApplicationAdapter {
 	public main(ARToolKitManager arToolKitManager){
 		this.arToolKitManager = arToolKitManager;
 	}
-	
+
 	@Override
 	public void create () {
 		Gdx.app.setLogLevel(Application.LOG_DEBUG);
 
 		//Configurar cámara de libGDX
-		camera = new ARCamera(67,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+		camera = new org.glud.trascendentAR.ARCamera(67,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 		camera.position.set(0f,0f,1f);
 		camera.lookAt(0,0,0);
 		camera.near = 0;
@@ -53,8 +55,8 @@ public class main extends ApplicationAdapter {
 		 * Load assets
 		 */
 		manager = new AssetManager();
-		manager.load("wolf.g3db",Model.class);
-		manager.load("koko.g3db",Model.class);
+		manager.load("nature.g3dj",Model.class);
+//		manager.load("koko.g3db",Model.class);
 		manager.finishLoading(); //Esperar hasta que los recursos  se hayan cargado - Wait until all resources are loaded
 
 		/*
@@ -67,10 +69,10 @@ public class main extends ApplicationAdapter {
 		instances = new ArrayMap<String, ModelInstance>();
 		Model model;
 
-		model = manager.get("wolf.g3db",Model.class);
-		instances.put("wolf",new ModelInstance(model));
-		model = manager.get("koko.g3db",Model.class);
-		instances.put("kokopelli",new ModelInstance(model));
+		model = manager.get("nature.g3dj",Model.class);
+		instances.put("kanjiMarker",new ModelInstance(model));
+//		model = manager.get("koko.g3db",Model.class);
+//		instances.put("kokopelli",new ModelInstance(model));
 
 //		model.dispose();
 
@@ -78,11 +80,11 @@ public class main extends ApplicationAdapter {
 		 * Crear controladores de animación si el modelo es animado
 		 * Create animation controllers if the model is animated
 		 */
-		animationControllers = new Array<AnimationController>();
-		AnimationController animationController;
-		animationController = new AnimationController(instances.get("wolf")); //Wolf
-		animationController.setAnimation("Wolf_Skeleton|Wolf_Run_Cycle_",-1);
-		animationControllers.add(animationController);
+//		animationControllers = new Array<AnimationController>();
+//		AnimationController animationController;
+//		animationController = new AnimationController(instances.get("wolf")); //Wolf
+//		animationController.setAnimation("Wolf_Skeleton|Wolf_Run_Cycle_",-1);
+//		animationControllers.add(animationController);
 
 		batch_3d = new ModelBatch();
 
@@ -103,9 +105,9 @@ public class main extends ApplicationAdapter {
 		/*
 		 * Actualizar los controladores de animación
 		 */
-		for (AnimationController controller:animationControllers) {
-			controller.update(delta);
-		}
+//		for (AnimationController controller:animationControllers) {
+//			controller.update(delta);
+//		}
 
 		/* Actualizar la matriz de proyección de la  cámara
 		 * Update camera projection matrix
@@ -138,10 +140,9 @@ public class main extends ApplicationAdapter {
 			}
 		}
 	}
-	
+
 	@Override
 	public void dispose () {
 		batch_3d.dispose();
 	}
-
 }

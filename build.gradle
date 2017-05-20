@@ -25,6 +25,7 @@ allprojects {
     }
 
     repositories {
+        jcenter()
         mavenLocal()
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
@@ -32,12 +33,29 @@ allprojects {
     }
 }
 
+project(":trascendentAR-core"){
+    apply plugin: "java"
+
+    dependencies{
+        compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+    }
+}
+
+project(":trascendentAR-android"){
+    apply plugin:"com.android.library"
+    dependencies{
+        compile project(":aRBaseLib")
+        compile project(":trascendentAR-core")
+        compile "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
+    }
+}
+
 project(":core") {
     apply plugin: "java"
 
-
     dependencies {
-        compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+        compile project(":trascendentAR-core")
+//        compile "com.badlogicgames.gdx:gdx:$gdxVersion"
     }
 }
 
@@ -48,8 +66,8 @@ project(":android") {
 
     dependencies {
         compile project(":core")
-        compile project(":aRBaseLib")
-        compile "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
+        compile project(":trascendentAR-android")
+//        compile "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-arm64-v8a"
