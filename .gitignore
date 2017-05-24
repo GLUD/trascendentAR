@@ -21,11 +21,21 @@ www-test/
 .gwt-tmp/
 
 ## Android Studio and Intellij and Android in general
-android/libs/armeabi/
-android/libs/armeabi-v7a/
-android/libs/arm64-v8a/
-android/libs/x86/
-android/libs/x86_64/
+android/libs/armeabi/*
+!android/libs/armeabi/libARWrapper.so
+!android/libs/armeabi/libc++_shared.so
+android/libs/armeabi-v7a/*
+!android/libs/armeabi-v7a/libARWrapper.so
+!android/libs/armeabi-v7a/libc++_shared.so
+android/libs/arm64-v8a/*
+!android/libs/arm64-v8a/libARWrapper.so
+!android/libs/arm64-v8a/libc++_shared.so
+android/libs/x86/*
+!android/libs/x86/libARWrapper.so
+!android/libs/x86/libc++_shared.so
+android/libs/x86_64/*
+!android/libs/x86_64/libARWrapper.so
+!android/libs/x86_64/libc++_shared.so
 android/gen/
 .idea/
 *.ipr

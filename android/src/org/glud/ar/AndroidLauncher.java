@@ -16,6 +16,7 @@ public class AndroidLauncher extends ARLauncher {
 
 	@Override
 	public boolean configureARScene() {
+		loadMarker("hiroMarker",MarkerType.SINGLE,"Data/hiro.patt",8);
 		loadMarker("kanjiMarker",MarkerType.SINGLE,"Data/kanji.patt",8);
 		return true;
 	}
