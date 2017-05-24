@@ -68,9 +68,9 @@ public class main extends ApplicationAdapter {
 		Model model;
 
 		model = manager.get("wolf.g3db",Model.class);
-		instances.put("wolf",new ModelInstance(model));
+		instances.put("hiroMarker",new ModelInstance(model));
 		model = manager.get("koko.g3db",Model.class);
-		instances.put("kokopelli",new ModelInstance(model));
+		instances.put("kanjiMarker",new ModelInstance(model));
 
 //		model.dispose();
 
@@ -80,7 +80,7 @@ public class main extends ApplicationAdapter {
 		 */
 		animationControllers = new Array<AnimationController>();
 		AnimationController animationController;
-		animationController = new AnimationController(instances.get("wolf")); //Wolf
+		animationController = new AnimationController(instances.get("hiroMarker")); //Wolf
 		animationController.setAnimation("Wolf_Skeleton|Wolf_Run_Cycle_",-1);
 		animationControllers.add(animationController);
 
@@ -94,8 +94,6 @@ public class main extends ApplicationAdapter {
 
 	@Override
 	public void render () {
-		Gdx.app.debug(TAG,"Rendering");
-
 		float delta = Gdx.graphics.getDeltaTime();
 		gl.glClearColor(0, 0, 0, 0);
 		gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
