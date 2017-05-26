@@ -1,9 +1,67 @@
 apply plugin: "java"
+//Pluigins para subir la libreria a jCenter
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+
+group = 'org.glud.trascendentAR'
+version = '1.0-beta.1'
+
 sourceCompatibility = 1.6
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 sourceSets.main.java.srcDirs = ["src/"]
 eclipse.project {
     name = appName + "-trascendentAR-core"
 }
+
+publishing {
+    publications {
+        MyPublication(MavenPublication) {
+            from components.java
+            groupId 'org.glud'
+            artifactId 'trascendentAR'
+            version '1.0-beta.1'
+        }
+    }
+}
+
+bintray {
+    def localProperties = project.file("../local.properties")
+    if (localProperties.exists()) {
+        Properties properties = new Properties()
+        localProperties.withInputStream { instr ->
+            properties.load(instr)
+        }
+        def bintray_user = properties.getProperty('bintray.user')
+        if (bintray_user) {
+            user = bintray_user
+        }
+        def bintray_key = properties.getProperty('bintray.key')
+        if (bintray_user) {
+            key = bintray_key
+        }
+    }
+    publications = ['MyPublication']
+    pkg {
+        repo = 'trascendentAR'
+        //userOrg = 'glud'
+        name = 'trascendentAR'
+        desc = 'A starter interface that includes everything needed to use ARtoolKit with libGDX on Android'
+        websiteUrl = 'https://glud.github.io/trascendentAR/'
+        issueTrackerUrl = 'https://github.com/GLUD/trascendentAR/issues'
+        vcsUrl = 'https://github.com/GLUD/trascendentAR.git'
+        licenses = ['LGPL-3.0']
+        labels = ['ARToolKit', 'libGDX', 'augmented reality']
+        publish = true
+        override = true
+        publicDownloadNumbers = true
+        version {
+            name = '1.0-beta.1' //Optional logical version name
+            desc = 'beta'
+            vcsTag = '1.0-beta.1'
+        }
+    }
+}
+
 dependencies {
 }

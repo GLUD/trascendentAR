@@ -1,2 +1,1 @@
-include ':trascendentAR-android'
 include 'core', 'android', 'aRBaseLib', 'trascendentAR-core', 'trascendentAR-android'

@@ -1,4 +1,26 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.0.0'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.0'
+        classpath 'com.github.dcendents:android-maven-plugin:1.2'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+repositories {
+    jcenter()
+}
+group = 'org.glud.trascendentAR'
+version = '1.0-beta.1'
+
 apply plugin: 'com.android.library'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.github.dcendents.android-maven'
 
 android {
     compileSdkVersion 25
@@ -9,9 +31,7 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
     buildTypes {
         release {
@@ -25,6 +45,77 @@ android {
     }
 }
 
+bintray {
+    def localProperties = project.file("../local.properties")
+    if (localProperties.exists()) {
+        Properties properties = new Properties()
+        localProperties.withInputStream { instr ->
+            properties.load(instr)
+        }
+        def bintray_user = properties.getProperty('bintray.user')
+        if (bintray_user) {
+            user = bintray_user
+        }
+        def bintray_key = properties.getProperty('bintray.key')
+        if (bintray_user) {
+            key = bintray_key
+        }
+    }
+    configurations = ['archives'] //When uploading configuration files
+    pkg {
+        repo = 'trascendentAR'
+        //userOrg = 'glud'
+        name = 'trascendentAR'
+        desc = 'A starter interface that includes everything needed to use ARtoolKit with libGDX on Android'
+        websiteUrl = 'https://glud.github.io/trascendentAR/'
+        issueTrackerUrl = 'https://github.com/GLUD/trascendentAR/issues'
+        vcsUrl = 'https://github.com/GLUD/trascendentAR.git'
+        licenses = ['LGPL-3.0']
+        labels = ['ARToolKit', 'libGDX', 'augmented reality']
+        publish = true
+        override = true
+        publicDownloadNumbers = true
+        version {
+            name = '1.0-beta.1' //Optional logical version name
+            desc = 'beta'
+            vcsTag = '1.0-beta.1'
+//                    attributes = ['gradle-plugin': 'org.glud.ar:trascendentAR:1.0-beta.1']
+        }
+    }
+}
+
+install {
+    repositories.mavenInstaller {
+        pom {
+            project {
+                packaging 'aar'
+                name 'trascendentAR'
+                url 'https://glud.github.io/trascendentAR/'
+
+                licenses {
+                    license {
+                        name 'LGPL-3.0'
+                        url 'https://artoolkit.org/artoolkit-licensing'
+                    }
+                }
+                developers {
+                    developer {
+                        id 'Juankz'
+                        name 'Juan Velandia'
+                        email 'juanvelandia@protonmail.com'
+                    }
+                }
+                scm {
+                    connection 'https://github.com/GLUD/trascendentAR.git'
+                    developerConnection 'https://github.com/GLUD/trascendentAR.git'
+                    url 'https://glud.github.io/trascendentAR/'
+
+                }
+            }
+        }
+    }
+}
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -32,4 +123,29 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.1.1'
     testCompile 'junit:junit:4.12'
+}
+
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+
+task findConventions << {
+    println project.getConvention()
 }
