@@ -987,7 +987,7 @@ $baseurl: '{{ site.baseurl }}/images';
 		}
 
 		@for $i from 1 through _misc(max-spotlights) {
-			$j: 0.075 * $i;
+			$j: (0.075 * $i) + 0.5;
 
 			&:nth-child(#{$i}) {
 				background-color: rgba(0,0,0, $j);
