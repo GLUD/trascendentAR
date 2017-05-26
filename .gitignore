@@ -72,3 +72,7 @@ Thumbs.db
 ## Web site
 .sass-cache
 _site
+
+gradle/
+gradlew
+gradlew.bat
