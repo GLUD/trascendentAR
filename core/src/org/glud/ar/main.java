@@ -71,6 +71,7 @@ public class main extends ApplicationAdapter {
 		 */
 		manager.load("wolf.g3db",Model.class);
 		manager.load("koko.g3db",Model.class);
+		manager.load("watercraft.g3db",Model.class);
 
 		batch_3d = new ModelBatch();
 
@@ -99,6 +100,8 @@ public class main extends ApplicationAdapter {
 		model = manager.get("wolf.g3db",Model.class);
 		instances.put("hiroMarker",new ModelInstance(model));
 		model = manager.get("koko.g3db",Model.class);
+		instances.put("kokoMarker",new ModelInstance(model));
+		model = manager.get("watercraft.g3db",Model.class);
 		instances.put("kanjiMarker",new ModelInstance(model));
 
 		/*
