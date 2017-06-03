@@ -72,6 +72,8 @@ public class main extends ApplicationAdapter {
 		manager.load("wolf.g3db",Model.class);
 		manager.load("koko.g3db",Model.class);
 		manager.load("watercraft.g3db",Model.class);
+		manager.load("landscape.g3db",Model.class);
+//		manager.load("houses.g3db",Model.class);
 
 		batch_3d = new ModelBatch();
 
@@ -98,11 +100,15 @@ public class main extends ApplicationAdapter {
 		Model model;
 
 		model = manager.get("wolf.g3db",Model.class);
-		instances.put("hiroMarker",new ModelInstance(model));
+		instances.put("wolfMarker",new ModelInstance(model));
 		model = manager.get("koko.g3db",Model.class);
 		instances.put("kokoMarker",new ModelInstance(model));
 		model = manager.get("watercraft.g3db",Model.class);
-		instances.put("kanjiMarker",new ModelInstance(model));
+		instances.put("watercraftMarker",new ModelInstance(model));
+		model = manager.get("landscape.g3db",Model.class);
+		instances.put("logoMarker",new ModelInstance(model));
+//		model = manager.get("houses.g3db",Model.class);
+//		instances.put("houseMarker",new ModelInstance(model));
 
 		/*
 		 * Crear controladores de animación si el modelo es animado
@@ -110,7 +116,7 @@ public class main extends ApplicationAdapter {
 		 */
 		animationControllers = new Array<AnimationController>();
 		AnimationController animationController;
-		animationController = new AnimationController(instances.get("hiroMarker")); //Wolf
+		animationController = new AnimationController(instances.get("wolfMarker")); //Wolf
 		animationController.setAnimation("Wolf_Skeleton|Wolf_Run_Cycle_",-1);
 		animationControllers.add(animationController);
 	}
