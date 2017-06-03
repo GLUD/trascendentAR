@@ -78,3 +78,8 @@ build/
 ## OS Specific
 .DS_Store
 Thumbs.db
+
+#Website
+.sass-cache/
+_site/
+
