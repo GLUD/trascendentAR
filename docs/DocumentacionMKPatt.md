@@ -18,7 +18,7 @@ Las medidas que por defecto maneja ARToolKit para los marcadores son las siguien
 
 ###Usando la herramienta mk_patt
 El uso de esta utilidad es bastante sencillo. Para comenzar, desde una terminal de comandos (ya sea en Windows, Mac OS o Linux) dirigirse hasta el directorio donde se encuentra ARToolKit y en la carpeta bin ejecutar el binario mk_patt. A continuación se ejemplifica el proceso mediante una imagen:
-![Image13(images/ima3.png)
+![Image3](images/ima3.png)
 
 Al arrancar, la aplicación solicita el archivo con los parámetros de la cámara que se va a usar para programar los marcadores. Para usar los parámetros por defecto simplemente se debe presionar Enter.
 Posteriormente debe aparecer la captura en tiempo real de la cámara que se esta usando.
