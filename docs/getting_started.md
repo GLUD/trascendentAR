@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: doc_page
 title: Aplicación simple
 description: Crear una aplicación simple con trascendentAR y libGDX
 ---
