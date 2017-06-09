@@ -1,6 +1,10 @@
-##Documentación para crear y programar marcadores para ARToolKit:
+---
+layout: doc_page
+title: Crear marcadores
+description: Crear y programar marcadores para ARToolKit
+---
 
-###¿Que son los marcadores?
+## ¿Que son los marcadores?
 Son imágenes que contienen un patrón cuadrangular que ARToolKit reconoce durante la captura de video por medio de la cámara del dispositivo.
 
 Los marcadores deben ser construidos bajo ciertos parámetros:
@@ -12,11 +16,11 @@ Los marcadores deben ser construidos bajo ciertos parámetros:
 Para versiones de ARToolKit v4.x se puede hacer uso de marcadores que contienen una malla de cuadros blancos y negros similares a los códigos QR en lugar de la típica imagen central que poseen los marcadores. Estos patrones son útiles para reducir el tiempo de carga cuando la cantidad implementada en la aplicación es considerable.
 ![Image1](images/ima1.jpg)
 
-###Creando nuevos marcadores
+## Creando nuevos marcadores
 Las medidas que por defecto maneja ARToolKit para los marcadores son las siguientes y son importantes para que la aplicación reconozca los patrones sin problemas.
 ![Image2](images/ima2.png)
 
-###Usando la herramienta mk_patt
+## Usando la herramienta mk_patt
 El uso de esta utilidad es bastante sencillo. Para comenzar, desde una terminal de comandos (ya sea en Windows, Mac OS o Linux) dirigirse hasta el directorio donde se encuentra ARToolKit y en la carpeta bin ejecutar el binario mk_patt. A continuación se ejemplifica el proceso mediante una imagen:
 ![Image3](images/ima3.png)
 
