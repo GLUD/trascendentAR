@@ -10,7 +10,7 @@ Los marcadores deben ser construidos bajo ciertos parámetros:
 * La imagen central puede estar dibujada en blanco y negro o puede contener color en su diseño
 
 Para versiones de ARToolKit v4.x se puede hacer uso de marcadores que contienen una malla de cuadros blancos y negros similares a los códigos QR en lugar de la típica imagen central que poseen los marcadores. Estos patrones son útiles para reducir el tiempo de carga cuando la cantidad implementada en la aplicación es considerable.
-
+![Image1](images/ima1.jpg)
 ###Creando nuevos marcadores
 Las medidas que por defecto maneja ARToolKit para los marcadores son las siguientes y son importantes para que la aplicación reconozca los patrones sin problemas.
 
