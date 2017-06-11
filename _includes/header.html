@@ -8,7 +8,8 @@
         <div id="menu">
           <ul>
             <li><a href="index.html">Inicio</a></li>
-            {% for my_page in site.pages %}
+            {% assign our_pages = site.pages | where:"lang",page.lang %}
+            {% for my_page in our_pages %}
             {% if my_page.title %}
 	    {% unless my_page.url contains 'docs' or my_page.title == "Referencia" %}
             <li><a href="{{ my_page.url | prepend: site.baseurl }}">{{ my_page.title }}</a></li>

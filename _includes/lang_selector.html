@@ -1,0 +1,9 @@
+
+<ul class="actions small">
+{% assign pages=site.pages | where:"ref", page.ref | sort: 'lang' %}
+{% for page in pages %}
+  <li>
+    <h5><a href="{{ page.url }}" >{{ page.lang }}</a></h5>
+  </li>
+{% endfor %}
+</ul>

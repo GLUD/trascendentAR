@@ -3,9 +3,9 @@
 
 # Site settings
 title: Transendent-AR
-description: Crea aplicaciones de Realidad Aumentada con la mejor Tecnología Libre.
-#  EN: Crea aplicaciones de Realidad Aumentada con la mejor Tecnología Libre.
-#  ES: Create Augmented Reality applications with the best Free Technology. #traductor GOOGLE JE 
+description:
+  es: Crea aplicaciones de Realidad Aumentada con la mejor Tecnología Libre.
+  en: Create Augmented Reality applications with the best Free Technology. #traductor GOOGLE JE
 
 owner: GLUD - Grupo GNU/Linux Universidad Distrital FJC # or company name
 first_published: 2017 # if migrating another site, the year of your first publish
