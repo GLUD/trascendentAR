@@ -1,13 +1,21 @@
 <!-- Header -->
 <header id="header"{% if page.layout == 'landing' %} class="alt"{% endif %}>
+  {%if page.lang != 'es' %}
+  <h1><a href="{{ site.baseurl | append: '/index_' | append: page.lang | append: '.html'}}">{{ site.title }}</a></h1>
+  {% else %}
   <h1><a href="{{ site.baseurl }}/index.html">{{ site.title }}</a></h1>
+  {% endif %}
   <nav id="nav">
     <ul>
       <li class="special">
         <a href="#menu" class="menuToggle"><span>Menu</span></a>
         <div id="menu">
           <ul>
-            <li><a href="index.html">Inicio</a></li>
+            {%if page.lang == 'es' %}
+            <li><a href="index.html">trascendent-AR</a></li>
+            {% else %}
+            <li><a href="{{'index_' | append: page.lang | append: '.html'}}">trascendent-AR</a></li>
+            {% endif %}
             {% assign our_pages = site.pages | where:"lang",page.lang %}
             {% for my_page in our_pages %}
             {% if my_page.title %}
