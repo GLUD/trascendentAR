@@ -3,7 +3,6 @@ layout: doc_page
 title: Crear marcadores
 description: Crear y programar marcadores para ARToolKit
 ---
-
 ## ¿Que son los marcadores?
 Son imágenes que contienen un patrón cuadrangular que ARToolKit reconoce durante la captura de video por medio de la cámara del dispositivo.
 
@@ -32,6 +31,6 @@ El siguiente paso se trata de apuntar la cámara directamente al marcador tratan
 
 Se debe rotar y acomodar el marcador con respecto a la cámara, hasta que la esquina superior izquierda de este, se vea resaltado por una línea roja, y la esquina inferior derecha por una línea verde. Al estar acomodado solo falta presionar el botón izquierdo del ratón (dar click) para que se genere una captura de la imagen.
 
-En la terminal se debe introducir el nombre que se le quiera dar al patrón con la condición de que debe tener la extensión .patt (para la mayoría de los casos), por ejemplo mipatron.patt o primerpatron.patt, y presionar Enter al terminar. 
+En la terminal se debe introducir el nombre que se le quiera dar al patrón con la condición de que debe tener la extensión .patt (para la mayoría de los casos), por ejemplo mipatron.patt o primerpatron.patt, y presionar Enter al terminar.
 
 Después de esto, la aplicación permite seguir creando patrones o se puede cerrar presionando el botón derecho del ratón  botón secundario).
