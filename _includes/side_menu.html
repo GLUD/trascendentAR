@@ -1,11 +1,12 @@
 <div class="row">
   <ul class="actions small">
-        {% for p in site.pages %}
-  	{% if p.url contains 'docs' %}
+    {% assign our_pages = site.pages | where:"lang",page.lang %}
+        {% for p in our_pages%}
+  	     {% if p.url contains 'docs' %}
           <li>
             <a {% if p.url == page.url %}class="button special"{% else %}class="button"{% endif %} href="{{ p.url | prepend: site.baseurl }}">{{ p.title }}</a>
           </li>
-  	{% endif %}
+  	      {% endif %}
         {% endfor %}
   </ul>
 </div>

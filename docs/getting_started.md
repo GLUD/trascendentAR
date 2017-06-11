@@ -2,6 +2,8 @@
 layout: doc_page
 title: Aplicación simple
 description: Crear una aplicación simple con trascendentAR y libGDX
+lang: es
+ref: simple_app
 ---
 
 1. Generar el projecto con libGDX solo con Android

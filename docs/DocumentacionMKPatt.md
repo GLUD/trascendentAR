@@ -2,6 +2,8 @@
 layout: doc_page
 title: Crear marcadores
 description: Crear y programar marcadores para ARToolKit
+lang: es
+ref: crear_marcadores
 ---
 ## ¿Que son los marcadores?
 Son imágenes que contienen un patrón cuadrangular que ARToolKit reconoce durante la captura de video por medio de la cámara del dispositivo.
