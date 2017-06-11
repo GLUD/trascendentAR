@@ -3,7 +3,7 @@
 {% assign pages=site.pages | where:"ref", page.ref | sort: 'lang' %}
 {% for page in pages %}
   <li>
-    <h5><a href="{{ page.url | prepend: prepend: site.baseurl }}" >{{ page.lang }}</a></h5>
+    <h5><a href="{{ page.url | prepend: site.baseurl }}" >{{ page.lang }}</a></h5>
   </li>
 {% endfor %}
 </ul>
