@@ -10,7 +10,7 @@
             <li><a href="index.html">Inicio</a></li>
             {% for my_page in site.pages %}
             {% if my_page.title %}
-	    {% unless my_page.url contains 'docs' %}
+	    {% unless my_page.url contains 'docs' or my_page.title == "Referencia" %}
             <li><a href="{{ my_page.url | prepend: site.baseurl }}">{{ my_page.title }}</a></li>
 	    {% endunless %}
             {% endif %}
