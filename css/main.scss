@@ -1233,6 +1233,12 @@ $baseurl: '{{ site.baseurl }}/images';
 			@include breakpoint(medium) {
 				width: 100%;
 			}
+
+			.img{
+				.center{
+					align-self: center;
+				}
+			}
 		}
 
 		&.alt {
