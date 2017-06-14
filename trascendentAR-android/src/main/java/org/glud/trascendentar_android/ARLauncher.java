@@ -134,13 +134,7 @@ public abstract class ARLauncher extends AndroidApplication implements CameraEve
 	@Override
 	public void cameraPreviewFrame(byte[] frame) {
 		if(this.firstUpdate) {
-			if(this.configureARScene()) {
-				Log.i("ARActivity", "Scene configured successfully");
-			} else {
-				Log.e("ARActivity", "Error configuring scene. Cannot continue.");
-				this.finish();
-			}
-
+			configureARScene();
 			this.firstUpdate = false;
 		}
 
@@ -159,7 +153,7 @@ public abstract class ARLauncher extends AndroidApplication implements CameraEve
 		ARToolKit.getInstance().cleanup();
 	}
 
-	abstract public boolean configureARScene();
+	abstract public void configureARScene();
 
 	protected void loadMarker(String name, String type, String path, float size){
 		int markerID = -1;
@@ -168,16 +162,8 @@ public abstract class ARLauncher extends AndroidApplication implements CameraEve
 		else Log.i("ARActivity","Marker"+name+" not loaded");
 	}
 
-	protected void loadMarker(String type, String path, float size){
-		int markerID = -1;
-		markerID = ARToolKit.getInstance().addMarker(type+";"+path+";"+size);
-		if(markerID < 0) Log.i("ARActivity","Marker not loaded from "+path);
-	}
 
-	@Override
-	public boolean markerVisible(int markerId) {
-		return ARToolKit.getInstance().queryMarkerVisible(markerId);
-	}
+
 
 	@Override
 	public boolean markerVisible(String markerName) {
@@ -194,13 +180,14 @@ public abstract class ARLauncher extends AndroidApplication implements CameraEve
 		return ARToolKit.getInstance().getProjectionMatrix();
 	}
 
-	@Override
-	public float[] getTransformMatrix(int marcadorId) {
-		return ARToolKit.getInstance().queryMarkerTransformation(marcadorId);
-	}
 
 	@Override
 	public float[] getTransformMatrix(String markerName) {
 		return ARToolKit.getInstance().queryMarkerTransformation(markers.get(markerName));
+	}
+
+	@Override
+	public boolean arIsRunning() {
+		return ARToolKit.getInstance().isRunning();
 	}
 }
