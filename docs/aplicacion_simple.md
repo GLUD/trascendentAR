@@ -221,7 +221,7 @@ NOTA: También puedes resumir los 2 pasos anteriores en una sola línea de conso
 `./gradlew assemble && adb install -r android/build/outputs/apk/android-debug.apk`
 
 ## Disfruta
-Apunta la cámara al patrón y observa la magia.
+Abre la aplicación, apunta la cámara al patrón y observa la magia.
 
 <center>
 <img src="images/simpleapp_output.png" alt="Bello resultado">

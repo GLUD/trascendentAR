@@ -20,7 +20,7 @@ Trascendentar includes all methods to initialize an android application from and
 
 To access all this benefits of trascendentAR library, the class _AndroidLauncher.java_ inside android module, must extend ARLauncher using `public class AndroidLauncher extends ARLauncher` (duh!)
 
-Then implement the absent methods to load markers and the end result should be:
+Then implement the missing methods to load markers and the end result should be:
 
 ``` java
 
@@ -58,7 +58,7 @@ Cool, now lets load a marker using the method _loadMarker(String name,String mar
 
 ## Using ARToolKit Manager to access augemented reality methods
 
-Inside the core module
+Inside the core module. The following code is well commented and should be enough to be understandable.
 ``` java
 package org.glud.arsimpleapp;
 
@@ -191,7 +191,7 @@ public class main extends ApplicationAdapter {
 }
 ```
 
-**Extended explanation:** If ypu are not familiar with libGDX 3D API, I suggest you to check [Xoppa tutorials](https://xoppa.github.io/blog/basic-3d-using-libgdx/) to get how it works. Some other thing you have to keep in mind:
+**Extended explanation:** If you are not familiar with libGDX 3D API, I suggest you to check [Xoppa tutorials](https://xoppa.github.io/blog/basic-3d-using-libgdx/) to get how it works. Some other thing you have to keep in mind:
 * The camera used is ARCamera, a variation of perspective camera.
 * Main class or _main_ as I called it, accepts a parameter ARToolKitManager in the constructor, this one is sent by AndroidLauncher.
 * Always check if armodule is running with `arManager.arRunning()`
@@ -207,7 +207,7 @@ NOTA: You could shorten this steps in just one code line:
 `./gradlew assemble && adb install -r android/build/outputs/apk/android-debug.apk`
 
 ## Enjoy
-Point the camera to the pattern and watch the magic
+Open the application, point the camera to the pattern and watch the magic
 <center>
 <img src="../images/simpleapp_output.png" alt="Pretty output">
 </center>
