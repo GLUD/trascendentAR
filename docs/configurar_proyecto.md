@@ -20,7 +20,7 @@ Si ya has usado libGDX antes, es posible que ya tengas la mayoría de Requisitos
 	* Android Build Tools
 * IntelliJ IDEA o Android Studio, cada cual tiene ventajas respecto al otro. Para este caso se usó IntelliJ IDEA.
 * libGDX setup app, se puede descargar de la [página oficial](http://libgdx.badlogicgames.com/download.html)
-* Librerías Nativas de ARToolKit
+* Archivos de configuración Librerías, donde se encuentran las librerías nativas de ARToolKit y el archivo de configuración de la cámara. Descargalo [aquí]()
 
 ## Iniciar la aplicación de libGDX
 E ingresar los datos correspondientes incluyendo el camino al SDK de Android, revisa la imagen para guiarte. Observa que únicamente dejé la casilla de Android marcada (Bajo Sub projects). También incluí la extension freetypefont para incluir lindas tipografías en mi aplicación.
@@ -76,10 +76,10 @@ defaultConfig {
 
 <span class="image right"><img src="images/simpleapp_nativelibs.png" alt="Archivos a modificar" /></span>
 
-Simplemente extrae las librerías de ARToolKit descargadas en el paso de requerimientos y copia las carpetas dentro del módulo android/libs. El resultado deberá ser similar a la imagen, con los archivos *libARWrapper.so* y *libc++_shared.so* en todas las arquitecturas: **arm64-v8a**, **armeabi**, **armeabi-v7a**, **x86** y **x86_64**
+Simplemente extrae los archivos de configuración descargados en el paso de requerimientos, busca la carpeta _native libs_ y dentro encontrarás las librerías de ARToolKit. Copia las carpetas dentro del módulo android/libs. El resultado deberá ser similar a la imagen, con los archivos *libARWrapper.so* y *libc++_shared.so* en todas las arquitecturas: **arm64-v8a**, **armeabi**, **armeabi-v7a**, **x86** y **x86_64**
 
 ## Añadir la carpeta _Data_ al directorio _assets_
-La carpeta _Data_ es muy importante, quí se encuentra el archivo de configuración de la cámara: _camera_para.dat_. También es donde es necesario colocar los archivos de marcadores (extensión _,patt_). Solo copiala dentro del directorioo _assets_ en el módulo de android
+La carpeta _Data_ es muy importante, también la encontrarás en la carpeta _config files_ que descargaste, aquí se encuentra el archivo de configuración de la cámara: _camera_para.dat_ y también es donde colocaremos los archivos de marcadores (extensión _.patt_). Solo copiala dentro del directorioo _assets_ en el módulo de android
 
 ## Añadir trascendentAR al proyecto
 

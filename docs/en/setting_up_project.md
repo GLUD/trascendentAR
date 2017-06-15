@@ -20,7 +20,7 @@ If you have used libGDX before, probably you have most of this stuff installed, 
 	* Android Build Tools
 * IntelliJ IDEA or Android Studio, each one has advantages over the other. For this tutorial IntelliJ IDEA will be used.
 * libGDX setup app, can get it from [the official website](http://libgdx.badlogicgames.com/download.html)
-* ARToolKit Native Libraries
+* Configuration files, where are located the ARToolKit Native Libraries and the camera configuration file. Download it here[]()
 
 ## Start libGDX setup application
 And enter the correpondent data, including Android SDK path, check the image as a guide. Note that only the android box is checked. I included freetypefont extension because I would like to add a cool tipography to my project, although it is not necessary. More information about this step [here](https://github.com/libgdx/libgdx/wiki/Project-Setup-Gradle)
@@ -75,10 +75,10 @@ defaultConfig {
 
 <span class="image right"><img src="../images/simpleapp_nativelibs.png" alt="Archivos a modificar" /></span>
 
-Simply extract the downloades ARToolKit libraries and move the folders inside the directory _android/libs_. The end result should be similar to the image, with the files  *libARWrapper.so* and *libc++_shared.so* inside each architecture: **arm64-v8a**, **armeabi**, **armeabi-v7a**, **x86** and **x86_64**
+Simply extract the downloaded configuration files. Look inside the forlder _Native Libs_ and you will see the ARToolKit libraries. Move the folders inside the directory _android/libs_. The end result should be similar to the image, with the files  *libARWrapper.so* and *libc++_shared.so* inside each architecture: **arm64-v8a**, **armeabi**, **armeabi-v7a**, **x86** and **x86_64**
 
 ## Add _Data_ folder to assets
-The _Data_ folder is very important, here is located the camera configuration file:_camera_para.dat_. Also is the place where we need to add all markers files (extension _.patt_). Just copy it to the assets folder inside android module.
+The _Data_ folder is very important, you will find it iside the _config_files_ folder too, here is located the camera configuration file:_camera_para.dat_. Also is the place where we will add all markers files (extension _.patt_). Just copy it to the assets folder inside android module.
 
 ## Add trascendentAR to the project
 
