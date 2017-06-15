@@ -6,7 +6,7 @@ lang: es
 ref: simple_app
 ---
 
-Al final de este tutorial tendrás unproyecto listo para crear una aplicación de realidad aumentada
+Al final de este tutorial tendrás un proyecto listo para crear una aplicación de realidad aumentada. El código de este tutorial lo puedes encontrar [aquí](https://github.com/Juankz/arSimpleApp)
 
 ## Requisitos
 Si ya has usado libGDX antes, es posible que ya tengas la mayoría de Requisitos instalados, solo deberás descargar las libraríasRToolKit. Si no has tenido experiencia con libGDX, para poder completar este tutorial, debes tener instalado en la máquina:

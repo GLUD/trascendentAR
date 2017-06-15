@@ -6,7 +6,7 @@ lang: en
 ref: simple_app
 ---
 
-If you have reached here, it means you already [configured a proyect](setting_up_project.html) and are ready to create your first augmented reality application. You can find this tutorial on [github]()
+If you have reached here, it means you already [configured a proyect](setting_up_project.html) and are ready to create your first augmented reality application. Remember that source code for this tutorial can be found on [github](https://github.com/Juankz/arSimpleApp). If ypu have any doubt regarding a file or project organization, go to the source and check it out.
 
 ## Getting ready with assets
 For any augmented reality application we need two things. First one is a marker which is a file describing a pattern or image that our application is going to track. Second one is a 3D model to show once our marker is visible. Download both of them [here](/downloads/simpleapp_assets.zip) <a href="/downloads/simpleapp_assets.zip" class="icon fa-download"></a>
