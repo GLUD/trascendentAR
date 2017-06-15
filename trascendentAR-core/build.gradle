@@ -14,16 +14,16 @@ eclipse.project {
     name = appName + "-trascendentAR-core"
 }
 
-publishing {
-    publications {
-        MyPublication(MavenPublication) {
-            from components.java
-            groupId 'org.glud'
-            artifactId 'trascendentAR'
-            version '1.0-beta.1'
-        }
-    }
-}
+//publishing {
+//    publications {
+//        MyPublication(MavenPublication) {
+//            from components.java
+//            groupId 'org.glud'
+//            artifactId 'trascendentAR'
+//            version '1.0-beta.1'
+//        }
+//    }
+//}
 
 bintray {
     def localProperties = project.file("../local.properties")
@@ -41,7 +41,8 @@ bintray {
             key = bintray_key
         }
     }
-    publications = ['MyPublication']
+//    publications = ['MyPublication']
+    configurations = ['archives'] //When uploading configuration files
     pkg {
         repo = 'trascendentAR'
         //userOrg = 'glud'
