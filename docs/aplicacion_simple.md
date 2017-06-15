@@ -8,6 +8,9 @@ ref: simple_app
 
 Si has llegado aquí, significa que ya [configuraste un proyecto](aplicacion_simple.html) y estás listo para crear tu primera aplicación de realidad aumentada.
 
+## Alistando los recursos
+Para cualquier aplicación de realidad aumentada con ARToolKit necesitamos 2 cosas: La primera es un marcador el cual es un archivo que describe un patrón o imagen que nuestra applicación deberá reconocer. La segunda es un modelo 3D para desplegar una vez que el marcador esté visible. Descargalos [aquí](/downloads/simpleapp_assets.zip) <a href="/downloads/simpleapp_assets.zip" class="icon fa-download"></a>
+
 ## Añadir código
 Trascendentar incluye todos los métodos para inicializar una aplicación en android incluyendo la cámara, la capa de gráficos e implementando el manejo necesario cuando la aplicacion entra en pausa o cierra, así no tienes que preocuparte por esto.
 Para acceder a los beneficios de trascendentAR, la clase AndroidLauncher.java dentro del módulo de android debe heredar de ARLauncher.java usando `public class AndroidLauncher extends ARLauncher`
@@ -33,22 +36,15 @@ public class AndroidLauncher extends ARLauncher {
 	}
 
 	@Override
-	public boolean configureARScene() {
-		return true;
+	public void configureARScene() {
 	}
 }
 ```
-Asegúrate de que el método `configureARScene()` retorne **true** o el programa no cargará ningún marcador.
+Ahora cambia la línea `initialize(new main(), config);` por `initialize(new main(this), config);`.Esto nos ayudará a acceder métodos de realidad aumentada desde el módulo core
 
 ## Cargar marcadores
 
 <span class="image left"><img src="images/simpleapp_patt.png" alt="Archivos a modificar" /></span>
-
-1. Crear carpeta _Data_ con marcadores dentro del directorio de  _assets_ en el módulo android. El nombre de la carpeta no debe cambiar o trascendentAR no será capaz de localizar los marcadores.
-2. Copiar el archivo hiro.patr a la carpeta _Data_ recién creada
-3. Dentro del método `configureARScene` carga el marcador usando el método loadMarker:  `loadMarker(MarkerType.SINGLE,"Data/hiro.patt",8);`
-4. Agregar archivo _camera_para.dat_ en la carpeta _Data_
-
 
 Resultado:
 
@@ -90,11 +86,16 @@ public class main extends ApplicationAdapter {
 	ModelBatch batch_3d; //Este objeto se encarga de pintar todos las instancias 3D en pantalla
 	Environment environment; //Controla la iluminación del espacio
 	Matrix4 transform = new Matrix4(); //Matriz auxiliar para manipular modelos si es necesesario
+	Stage stage; //Dibuja todos los objetos 2D en pantalla y recibe entradas (Ej: Toque de un dedo)
+	Button cameraPrefsButton; //Botón
+
+	//¡Importante! this is how we can connect with Android side and artoolkit methods
+	public main(ARToolKitManager arManager){
+		this.arManager = arManager;
+	}
 
 	@Override
-	public void create (ARToolKitManager arManager) {
-		this.arManager = arManager;
-
+	public void create () {
 		//Configurar cámara de libGDX
 		camera = new ARCamera(67,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 		camera.position.set(0f,0f,1f);
@@ -103,27 +104,46 @@ public class main extends ApplicationAdapter {
 		camera.far = 1000f;
 		camera.update();
 
-		/*
-		 * Agregar luces al espacio 3D
-		 * Add lights to 3D space
-		 */
+		/* Cargar recursos -> Modelo 3D	e imágenes del botón	 */
+		assetManager = new AssetManager();
+		assetManager.load("koko.g3db", Model.class);
+		assetManager.load("cam_button_down.png", Texture.class);
+		assetManager.load("cam_button_up.png", Texture.class);
+		assetManager.finishLoading();
+
+
+		/* Crear una instancia del modelo		 */
+		koko = new ModelInstance(assetManager.get("koko.g3db",Model.class));
+
+		/* Agregar luces al espacio 3D		 */
 		environment = new Environment();
 		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
     environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
 
-		/*
-		 * Cargar recursos -> Modelo 3D
-		 * Load assets -> 3D Model
-		 */
-		assetManager = new AssetManager();
-		assetManager.load("koko.g3db", Model.class);
-		assetManager.finishLoading();
+		batch_3d = new ModelBatch();
 
-		/*
-		 * Crear una instancia del modelo
-		 * create an instance from the model
+		stage = new Stage(new ScreenViewport());
+		/* Create a button to open the camera preferences activity. First we define what images will be rendered when up and down. Usually this is made with a skin, but for this example we will do it using code
 		 */
-		koko = new ModelInstance(assetManager.get("koko.g3db",Model.class));
+		Button.ButtonStyle buttonStyle = new Button.ButtonStyle();
+		buttonStyle.up = new Image(assetManager.get("cam_button_up.png",Texture.class)).getDrawable();
+		buttonStyle.down = new Image(assetManager.get("cam_button_down.png",Texture.class)).getDrawable();
+		cameraPrefsButton = new Button(buttonStyle);
+		//Damos una posicion en la parte superior derecha de la pantalla
+		cameraPrefsButton.setPosition(stage.getWidth() - 20 - cameraPrefsButton.getHeight(),stage.getHeight() - 20 - cameraPrefsButton.getHeight());
+
+		// Recognize when button is clicked and open camera preferences using arToolKitManger
+		cameraPrefsButton.addListener(new ClickListener(){
+			public void clicked (InputEvent event, float x, float y) {
+				arManager.openCameraPreferences();
+			}
+		});
+
+		/* Let's add the button to the stage		 */
+		stage.addActor(cameraPrefsButton);
+
+		/* Finally as we have a button to be pressed, we need to make stage to receive inputs*/
+		Gdx.input.setInputProcessor(stage);
 	}
 
 	@Override
@@ -156,7 +176,6 @@ public class main extends ApplicationAdapter {
 			transform.set(arManager.getTransformMatrix(markerID));
 			/* (5)
 			 * Actualizar Cámara
-			 * Update camera
 			 */
 			transform.getTranslation(camera.position);
 			camera.position.scl(-1);
@@ -164,14 +183,12 @@ public class main extends ApplicationAdapter {
 
 			/* (6)
 			 * Dependiendo de las coordenadas del modelo puede necesitar rotarlo
-			 * Depending from model coordinates it may be desired to apply a rotation
 			 */
 			transform.rotate(1, 0, 0, 90);
 			koko.transform.set(transform);
 
 			/* (7)
 			 * Pintar objetos en pantalla
-			 * Draw objects on screen
 			 */
 			batch_3d.begin(camera);
 			batch_3d.render(koko, environment);
@@ -179,10 +196,7 @@ public class main extends ApplicationAdapter {
 		}
 	}
 
-	/*
-	* Manejo apropiado de memoria
-	* Proper memory management
-	*/
+	/* Manejo apropiado de memoria	*/
 	@Override
 	public void dispose () {
 		batch_3d.dispose();
@@ -210,5 +224,5 @@ NOTA: También puedes resumir los 2 pasos anteriores en una sola línea de conso
 Apunta la cámara al patrón y observa la magia.
 
 <center>
-<img src="images/simpleapp_output.jpg" alt="Bello resultado">
+<img src="images/simpleapp_output.png" alt="Bello resultado">
 </center>

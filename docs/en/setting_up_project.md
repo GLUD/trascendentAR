@@ -20,7 +20,7 @@ If you have used libGDX before, probably you have most of this stuff installed, 
 	* Android Build Tools
 * IntelliJ IDEA or Android Studio, each one has advantages over the other. For this tutorial IntelliJ IDEA will be used.
 * libGDX setup app, can get it from [the official website](http://libgdx.badlogicgames.com/download.html)
-* Configuration files, where are located the ARToolKit Native Libraries and the camera configuration file. Download it here[]()
+* Configuration files, where are located the ARToolKit Native Libraries and the camera configuration file. Download it [here](/downloads/config_files.zip) <a href="/downloads/config_files.zip" class="icon fa-download"></a>
 
 ## Start libGDX setup application
 And enter the correpondent data, including Android SDK path, check the image as a guide. Note that only the android box is checked. I included freetypefont extension because I would like to add a cool tipography to my project, although it is not necessary. More information about this step [here](https://github.com/libgdx/libgdx/wiki/Project-Setup-Gradle)
@@ -59,6 +59,20 @@ In AndroidManifest.xml
 
 <!--Modify minimum versión of android sdk-->
 <uses-sdk android:minSdkVersion="15" android:targetSdkVersion="25" />
+
+...
+
+<!-- Add camera preferences Activity, don't touch anything else -->
+<application ... >
+        <activity
+            ...
+        ></activity>
+        <activity android:name="org.artoolkit.ar.base.camera.CameraPreferencesActivity"
+                  android:label="Camera Prefs"
+                  android:screenOrientation="landscape"
+                  android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
+        </activity>
+    </application>
 ```
 
 In build.gradle

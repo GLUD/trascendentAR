@@ -6,9 +6,16 @@ lang: en
 ref: simple_app
 ---
 
-If you have reached here, it means you already [configured a proyect](setting_up_project.html) and are ready to create your first augmented reality application.
+If you have reached here, it means you already [configured a proyect](setting_up_project.html) and are ready to create your first augmented reality application. You can find this tutorial on [github]()
 
-## Adding Code
+## Getting ready with assets
+For any augmented reality application we need two things. First one is a marker which is a file describing a pattern or image that our application is going to track. Second one is a 3D model to show once our marker is visible. Download both of them [here](/downloads/simpleapp_assets.zip) <a href="/downloads/simpleapp_assets.zip" class="icon fa-download"></a>
+
+Aditionally on the downloaded folder you will find 2 images _cam_button_down.png_ and _cam_button_up.png_ those will be used to create a button connecting to camera settings for adjust of resolution and what type of camera will be used (front or rear)
+
+Copy your assets to the _assets_ folder, but the file hiro.patt must go **inside the Data folder** as it is going to be used by the AR module.
+
+## Adding Code on android side
 Trascendentar includes all methods to initialize an android application from android side, including camera, graphics layer and of course implementing a proper way to manage these resources when the app closes, pauses and resumes. So you don't have to worry about anything.
 
 To access all this benefits of trascendentAR library, the class _AndroidLauncher.java_ inside android module, must extend ARLauncher using `public class AndroidLauncher extends ARLauncher` (duh!)
@@ -16,15 +23,6 @@ To access all this benefits of trascendentAR library, the class _AndroidLauncher
 Then implement the absent methods to load markers and the end result should be:
 
 ``` java
-
-package org.glud.arsimpleapp;
-
-import android.os.Bundle;
-
-import com.badlogic.gdx.backends.android.AndroidApplication;
-import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import org.glud.arsimpleapp.main;
-import org.glud.trascendentar_android.ARLauncher;
 
 public class AndroidLauncher extends ARLauncher {
 	@Override
@@ -35,69 +33,58 @@ public class AndroidLauncher extends ARLauncher {
 	}
 
 	@Override
-	public boolean configureARScene() {
-		return true;
+	public void configureARScene() {
 	}
 }
 ```
-Asegúrate de que el método `configureARScene()` retorne **true** o el programa no cargará ningún marcador.
 
-## Cargar marcadores
+Now change the line `initialize(new main(), config);` for `initialize(new main(this), config);` so we can access ARToolKit methods from the core module
+
+## Load markers
 
 <span class="image left"><img src="../images/simpleapp_patt.png" alt="Archivos a modificar" /></span>
 
-1. Crear carpeta _Data_ con marcadores dentro del directorio de  _assets_ en el módulo android. El nombre de la carpeta no debe cambiar o trascendentAR no será capaz de localizar los marcadores.
-2. Copiar el archivo hiro.patr a la carpeta _Data_ recién creada
-3. Dentro del método `configureARScene` carga el marcador usando el método loadMarker:  `loadMarker(MarkerType.SINGLE,"Data/hiro.patt",8);`
-4. Agregar archivo _camera_para.dat_ en la carpeta _Data_
-
-
-Resultado:
+Cool, now lets load a marker using the method _loadMarker(String name,String marker_type, String path_to_marker,int size)_. Like this:
 
 ``` java
 @Override
-public boolean configureARScene() {
-    loadMarker("hiroMarker",MarkerType.SINGLE,"Data/hiro.patt",8);
-    return true;
-}
+	public void configureARScene() {
+		loadMarker("hiroMarker",MarkerType.SINGLE,"Data/hiro.patt",8);
+	}
 ```
-Este método añade un marcador para ser reconocido por ARToolKit, los parámetros de entrada son los siguientes: nombre del marcador, tipo de marcador, ruta del marcador (siempre debe estar en la carpeta _Data_) y tamáño del marcador, recomendado mayor a 4 unidades y menor a 100. EL tope máximo realmente depende de la distancia focal que se asigne a la cámara.
+* Marker types are basically two: Single or Multiple, more information about the diferences [here](https://archive.artoolkit.org/documentation/doku.php?id=3_Marker_Training:marker_multi). This property can be accesed using MarkerType.TYPE
+* The marker patt must always point to the folder _Data_
+* Recomended size is grater than 4 units and less than 100. Actually te maximum value is determined by the parameters given to the libGDX camera by you.
 
-## Usar ARToolKit Manager para acceder métodos de realidad aumentada
+## Using ARToolKit Manager to access augemented reality methods
 
-Desde el módulo core, se maneja toda la lógica del juego o aplicación. El siguiente código está bien comentado y es suficientemente auto-explicativo:
-
+Inside the core module
 ``` java
 package org.glud.arsimpleapp;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g3d.Environment;
-import com.badlogic.gdx.graphics.g3d.Model;
-import com.badlogic.gdx.graphics.g3d.ModelBatch;
-import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.badlogic.gdx.math.Matrix4;
-import org.glud.trascendentAR.ARCamera;
-import org.glud.trascendentAR.ARToolKitManager;
+//imports ...
 
 public class main extends ApplicationAdapter {
-	ARToolKitManager arManager; //Accede a los métodos de realidad aumentada
-	AssetManager assetManager; //Se usa para cargar recursos
-	ModelInstance koko; //La instancia del modelo que se va a usar
-	ARCamera camera; //Cámara de realidad aumentada
-	ModelBatch batch_3d; //Este objeto se encarga de pintar todos las instancias 3D en pantalla
-	Environment environment; //Controla la iluminación del espacio
-	Matrix4 transform = new Matrix4(); //Matriz auxiliar para manipular modelos si es necesesario
+	ARToolKitManager arManager; //To access AR methods
+	AssetManager assetManager; //To Load assets
+	ModelInstance koko; //Instance of our 3D model
+	ARCamera camera; //Augmented reality Camera
+	ModelBatch batch_3d; //To render 3D objects on screen
+	Environment environment; //Control lights
+	Matrix4 transform = new Matrix4(); //Auxiliar matrix
+	Stage stage; //2D stuff and input for 2D
+	Button cameraPrefsButton;
+
+	//Important! this is how we can connect with Android side and artoolkit methods
+	public main(ARToolKitManager arManager){
+		this.arManager = arManager;
+	}
 
 	@Override
-	public void create (ARToolKitManager arManager) {
-		this.arManager = arManager;
+	public void create () {
+		Gdx.app.setLogLevel(Application.LOG_DEBUG);
 
-		//Configurar cámara de libGDX
+		//Setting up libGDX camera
 		camera = new ARCamera(67,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 		camera.position.set(0f,0f,1f);
 		camera.lookAt(0,0,0);
@@ -105,59 +92,74 @@ public class main extends ApplicationAdapter {
 		camera.far = 1000f;
 		camera.update();
 
-		/*
-		 * Agregar luces al espacio 3D
-		 * Add lights to 3D space
-		 */
-		environment = new Environment();
-		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
-    environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
-
-		/*
-		 * Cargar recursos -> Modelo 3D
-		 * Load assets -> 3D Model
-		 */
+		//Load assets
 		assetManager = new AssetManager();
 		assetManager.load("koko.g3db", Model.class);
-		assetManager.finishLoading();
+		assetManager.load("cam_button_down.png", Texture.class);
+		assetManager.load("cam_button_up.png", Texture.class);
+		assetManager.finishLoading();//Wait until load everything
 
-		/*
-		 * Crear una instancia del modelo
-		 * create an instance from the model
-		 */
+		// Create a model instance
 		koko = new ModelInstance(assetManager.get("koko.g3db",Model.class));
+
+		//Adding lights
+		environment = new Environment();
+		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
+		environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
+
+		batch_3d = new ModelBatch();
+
+		stage = new Stage(new ScreenViewport());
+		/* Create a button to open the camera preferences activity. First we define what images will be rendered when up and down. Usually this is made with a skin, but for this example we will do it using code
+		 */
+		Button.ButtonStyle buttonStyle = new Button.ButtonStyle();
+		buttonStyle.up = new Image(assetManager.get("cam_button_up.png",Texture.class)).getDrawable();
+		buttonStyle.down = new Image(assetManager.get("cam_button_down.png",Texture.class)).getDrawable();
+		cameraPrefsButton = new Button(buttonStyle);
+		//Damos una posicion en la parte superior derecha de la pantalla
+		cameraPrefsButton.setPosition(stage.getWidth() - 20 - cameraPrefsButton.getHeight(),stage.getHeight() - 20 - cameraPrefsButton.getHeight());
+
+		// Recognize when button is clicked and open camera preferences using arToolKitManger
+		cameraPrefsButton.addListener(new ClickListener(){
+			public void clicked (InputEvent event, float x, float y) {
+				arManager.openCameraPreferences();
+			}
+		});
+
+		/* Let's add the button to the stage		 */
+		stage.addActor(cameraPrefsButton);
+
+		/* Finally as we have a button to be pressed, we need to make stage to receive inputs*/
+		Gdx.input.setInputProcessor(stage);
 	}
 
 	@Override
 	public void render () {
 		/* (1)
-		* Limpiar la pantalla con un color negro y alpha cero, esto es prácticamente un color transparente,
-		* sin embargo de no ser un color negro, no funcionará adecuadamente
+		* Clean screen of black color with alpha zero. Keep in mind that the gl flags used are not the ones that come by default in libGDX
 		*/
 		gl.glClearColor(0, 0, 0, 0);
 		gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
 		/* (2)
-		* Antes de llamar cualquier método de ARToolkit,debemos revisar
-		* si el módulo de realidad aumentada ya está listo, de lo contrario
-		* la aplicación fallará
+		* Before call any AR method we must be sure the augmented reality module is
+		* ready and running.
 		*/
 		if(!arManager.arRunning())return;
 
 		/*(3)
-		*	Actualizar la matriz de proyección de la cámara
-		*/
+		 *	Update camera projection matrix using device camera projection matrix
+		 * provided by artoolkit
+		 */
 		camera.projection.set(arManager.getProjectionMatrix());
 
 		/*(4)
-		*	Comprobar si el marcador está visible, el texto asignado a markerID debe coincidir con
-		* el nombre dado al marcador cuando se cargó en la clase AndroidLauncher
+		*	Check if marker is visible, markerID string should be equal to the marker name given on AndroidLauncher when marker was loaded
 		*/
 		String markerID = "hiroMarker";
 		if(arManager.markerVisible(markerID)){
 			transform.set(arManager.getTransformMatrix(markerID));
 			/* (5)
-			 * Actualizar Cámara
 			 * Update camera
 			 */
 			transform.getTranslation(camera.position);
@@ -165,14 +167,12 @@ public class main extends ApplicationAdapter {
 			camera.update();
 
 			/* (6)
-			 * Dependiendo de las coordenadas del modelo puede necesitar rotarlo
 			 * Depending from model coordinates it may be desired to apply a rotation
 			 */
 			transform.rotate(1, 0, 0, 90);
 			koko.transform.set(transform);
 
 			/* (7)
-			 * Pintar objetos en pantalla
 			 * Draw objects on screen
 			 */
 			batch_3d.begin(camera);
@@ -181,35 +181,33 @@ public class main extends ApplicationAdapter {
 		}
 	}
 
-	/*
-	* Manejo apropiado de memoria
-	* Proper memory management
-	*/
+	/* Proper memory management	*/
 	@Override
 	public void dispose () {
+		stage.dispose();
 		batch_3d.dispose();
 		assetManager.dispose();
 	}
 }
 ```
 
-**Explicación extendida:** Si no estás familiarizado con 3D en libGDX, te recomiendo los tutoriales de [Xoppa](https://xoppa.github.io/blog/basic-3d-using-libgdx/) (En inglés). Algunas cosas que debes tener en cuenta son:
-* La cámara que se usa es ARCamera, una cámara propia de trascendentAR.
-* La clase principal o _main_ como se llamó en este caso, acepta un objeto ARToolKitManager en el constructor, este se envía desde AndroidLauncher.
-* Siempre revisar si el módulo de realidad aumentada está funcionando usando `arManager.arRunning()`
-* G3DB es el formato de modelos 3D que maneja libGDX, se puede convertir desde otros formatos como FBX o OBJ a G3DB usando [esta herramienta](https://github.com/libgdx/fbx-conv) de libGDX. Pero hay que tener en cuenta que tiene limitaciones, mayor información [aquí](https://github.com/libgdx/libgdx/wiki/Importing-Blender-models-in-LibGDX).
+**Extended explanation:** If ypu are not familiar with libGDX 3D API, I suggest you to check [Xoppa tutorials](https://xoppa.github.io/blog/basic-3d-using-libgdx/) to get how it works. Some other thing you have to keep in mind:
+* The camera used is ARCamera, a variation of perspective camera.
+* Main class or _main_ as I called it, accepts a parameter ARToolKitManager in the constructor, this one is sent by AndroidLauncher.
+* Always check if armodule is running with `arManager.arRunning()`
+* G3DB is a 3D models format used by libGDX, it is posible to convert from other formats like FBX o OBJ a G3DB using [this libGDX tool](https://github.com/libgdx/fbx-conv). But beware of some limitationsm more information [here](https://github.com/libgdx/libgdx/wiki/Importing-Blender-models-in-LibGDX).
 
-## Correr la aplicacion
+## Run the app
 
-1. Generar APK usando intelliJ IDEA en la pestaña Build
-2. Instalar la aplicación en el teléfono móvil. Desafortunadamente este paso debe ser ejecutado por consola, afortunadamente IntelliJ IDEA y Android Studio nos proveen una consola que podemos usar. Simplemente hay que escribir la siguente línea: `adb install -r android/build/outputs/apk/android-debug.apk` y la aplicación se instalará en tu dipositivo
+1. Generate APK usder IntelliJ IDEA tab Build
+2. Install on the device: Unfortunately this step must be done though terminal, fortunately IntelliJ IDEA and Android Studio provide a useful console to use. Simply write the following line: `adb install -r android/build/outputs/apk/android-debug.apk` and the app will be instaled on your device
 
-NOTA: También puedes resumir los 2 pasos anteriores en una sola línea de consola:
+NOTA: You could shorten this steps in just one code line:
 
 `./gradlew assemble && adb install -r android/build/outputs/apk/android-debug.apk`
 
-## Disfruta
+## Enjoy
 Point the camera to the pattern and watch the magic
 <center>
-<img src="../images/simpleapp_output.jpg" alt="Pretty output">
+<img src="../images/simpleapp_output.png" alt="Pretty output">
 </center>

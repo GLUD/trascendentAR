@@ -20,7 +20,7 @@ Si ya has usado libGDX antes, es posible que ya tengas la mayoría de Requisitos
 	* Android Build Tools
 * IntelliJ IDEA o Android Studio, cada cual tiene ventajas respecto al otro. Para este caso se usó IntelliJ IDEA.
 * libGDX setup app, se puede descargar de la [página oficial](http://libgdx.badlogicgames.com/download.html)
-* Archivos de configuración Librerías, donde se encuentran las librerías nativas de ARToolKit y el archivo de configuración de la cámara. Descargalo [aquí]()
+* Archivos de configuración Librerías, donde se encuentran las librerías nativas de ARToolKit y el archivo de configuración de la cámara. Descargalo [aquí](/downloads/config_files.zip) <a href="/downloads/config_files.zip" class="icon fa-download"></a>
 
 ## Iniciar la aplicación de libGDX
 E ingresar los datos correspondientes incluyendo el camino al SDK de Android, revisa la imagen para guiarte. Observa que únicamente dejé la casilla de Android marcada (Bajo Sub projects). También incluí la extension freetypefont para incluir lindas tipografías en mi aplicación.
@@ -41,7 +41,9 @@ Mi proyecto fue creado en el directorio arSimpleApp de mi carpeta de usuario, el
 
 ## MODIFICAR ARCHIVOS
 
-Bien, ahora que tenemos nuestro proyecto debemos realizar ciertos cambios para trabajar con realidad aumentada, el primero de ellos es modificar la versión sdk mínima en caso de que exista una menor a la especificada en los archivos AndroidManifest.xml y build.gradle del módulo de android
+Bien, ahora que tenemos nuestro proyecto debemos realizar ciertos cambios para trabajar con realidad aumentada, el primero de ellos es modificar el archivo AndroidManifest agregando permisos para usar la cámara del dispositivo, modificar la versión sdk mínima de Android en caso de que exista una menor a 15. Y finalmente agregar la actividad de preferencias de cámara que nos permitirá ajustar la resolución deseada.
+
+Si la versión del SDK es menor a 15 también se debe modificar el archivo build.gradle del módulo de android
 
 <span class="image left"><img src="images/simpleapp_files2modify.png" alt="Archivos a modificar" /></span>
 
@@ -60,6 +62,20 @@ En AndroidManifest.xml
 
 <!--Modificar versión mínima de android sdk-->
 <uses-sdk android:minSdkVersion="15" android:targetSdkVersion="25" />
+
+...
+
+<!-- Añadir Camera Preferences Activity, no tocar nada más -->
+<application ... >
+        <activity
+            ...
+        ></activity>
+        <activity android:name="org.artoolkit.ar.base.camera.CameraPreferencesActivity"
+                  android:label="Camera Prefs"
+                  android:screenOrientation="landscape"
+                  android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
+        </activity>
+    </application>
 ```
 
 En build.gradle
