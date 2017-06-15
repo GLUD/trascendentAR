@@ -11,7 +11,7 @@ Si has llegado aquí, significa que ya [configuraste un proyecto](aplicacion_sim
 ## Añadir código
 Trascendentar incluye todos los métodos para inicializar una aplicación en android incluyendo la cámara, la capa de gráficos e implementando el manejo necesario cuando la aplicacion entra en pausa o cierra, así no tienes que preocuparte por esto.
 Para acceder a los beneficios de trascendentAR, la clase AndroidLauncher.java dentro del módulo de android debe heredar de ARLauncher.java usando `public class AndroidLauncher extends ARLauncher`
-Posteriormente agregar los métodos faltantes para crear marcadores. El resultado final será:
+Posteriormente agregar los métodos faltantes para cargar marcadores. El resultado final será:
 
 ``` java
 
@@ -55,14 +55,15 @@ Resultado:
 ``` java
 @Override
 public boolean configureARScene() {
-    loadMarker(MarkerType.SINGLE,"Data/hiro.patt",8);
+    loadMarker("hiroMarker",MarkerType.SINGLE,"Data/hiro.patt",8);
     return true;
 }
 ```
-
-Este método cargará el marcador con ID=0, si cargamos otro marcador, tendrá ID=1 y así sucesivamente. También se puede añadir un nombre al marcador para referenciarlo más fácil: `loadMarker("miMarcador",MarkerType.SINGLE,"Data/hiro.patt",8);`
+Este método añade un marcador para ser reconocido por ARToolKit, los parámetros de entrada son los siguientes: nombre del marcador, tipo de marcador, ruta del marcador (siempre debe estar en la carpeta _Data_) y tamáño del marcador, recomendado mayor a 4 unidades y menor a 100. EL tope máximo realmente depende de la distancia focal que se asigne a la cámara.
 
 ## Usar ARToolKit Manager para acceder métodos de realidad aumentada
+
+Desde el módulo core, se maneja toda la lógica del juego o aplicación. El siguiente código está bien comentado y es suficientemente auto-explicativo:
 
 ``` java
 package org.glud.arsimpleapp;
@@ -82,18 +83,13 @@ import org.glud.trascendentAR.ARCamera;
 import org.glud.trascendentAR.ARToolKitManager;
 
 public class main extends ApplicationAdapter {
-	ARToolKitManager arManager;
-	AssetManager assetManager;
-	ModelInstance koko;
-	ARCamera camera;
-	ModelBatch batch_3d;
-	Environment environment;
-	Matrix4 transform = new Matrix4();
-
-	/*
-	Usamos asset manager para cargar modelos 3D, tipografias,
-	 imagenes 2D y demas
- 	*/
+	ARToolKitManager arManager; //Accede a los métodos de realidad aumentada
+	AssetManager assetManager; //Se usa para cargar recursos
+	ModelInstance koko; //La instancia del modelo que se va a usar
+	ARCamera camera; //Cámara de realidad aumentada
+	ModelBatch batch_3d; //Este objeto se encarga de pintar todos las instancias 3D en pantalla
+	Environment environment; //Controla la iluminación del espacio
+	Matrix4 transform = new Matrix4(); //Matriz auxiliar para manipular modelos si es necesesario
 
 	@Override
 	public void create (ARToolKitManager arManager) {
@@ -107,38 +103,86 @@ public class main extends ApplicationAdapter {
 		camera.far = 1000f;
 		camera.update();
 
+		/*
+		 * Agregar luces al espacio 3D
+		 * Add lights to 3D space
+		 */
+		environment = new Environment();
+		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
+    environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
+
+		/*
+		 * Cargar recursos -> Modelo 3D
+		 * Load assets -> 3D Model
+		 */
 		assetManager = new AssetManager();
 		assetManager.load("koko.g3db", Model.class);
 		assetManager.finishLoading();
+
+		/*
+		 * Crear una instancia del modelo
+		 * create an instance from the model
+		 */
 		koko = new ModelInstance(assetManager.get("koko.g3db",Model.class));
 	}
 
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		/* (1)
+		* Limpiar la pantalla con un color negro y alpha cero, esto es prácticamente un color transparente,
+		* sin embargo de no ser un color negro, no funcionará adecuadamente
+		*/
+		gl.glClearColor(0, 0, 0, 0);
+		gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+
+		/* (2)
+		* Antes de llamar cualquier método de ARToolkit,debemos revisar
+		* si el módulo de realidad aumentada ya está listo, de lo contrario
+		* la aplicación fallará
+		*/
+		if(!arManager.arRunning())return;
+
+		/*(3)
+		*	Actualizar la matriz de proyección de la cámara
+		*/
 		camera.projection.set(arManager.getProjectionMatrix());
-		int markerID = 0;
+
+		/*(4)
+		*	Comprobar si el marcador está visible, el texto asignado a markerID debe coincidir con
+		* el nombre dado al marcador cuando se cargó en la clase AndroidLauncher
+		*/
+		String markerID = "hiroMarker";
 		if(arManager.markerVisible(markerID)){
 			transform.set(arManager.getTransformMatrix(markerID));
-			/* Actualizar Cámara
+			/* (5)
+			 * Actualizar Cámara
 			 * Update camera
 			 */
 			transform.getTranslation(camera.position);
 			camera.position.scl(-1);
 			camera.update();
 
-			/* Dependiendo de las coordenadas del modelo puede necesitar rotarlo
+			/* (6)
+			 * Dependiendo de las coordenadas del modelo puede necesitar rotarlo
 			 * Depending from model coordinates it may be desired to apply a rotation
 			 */
 			transform.rotate(1, 0, 0, 90);
 			koko.transform.set(transform);
+
+			/* (7)
+			 * Pintar objetos en pantalla
+			 * Draw objects on screen
+			 */
 			batch_3d.begin(camera);
 			batch_3d.render(koko, environment);
 			batch_3d.end();
 		}
 	}
 
+	/*
+	* Manejo apropiado de memoria
+	* Proper memory management
+	*/
 	@Override
 	public void dispose () {
 		batch_3d.dispose();
@@ -146,6 +190,12 @@ public class main extends ApplicationAdapter {
 	}
 }
 ```
+
+**Explicación extendida:** Si no estás familiarizado con 3D en libGDX, te recomiendo los tutoriales de [Xoppa](https://xoppa.github.io/blog/basic-3d-using-libgdx/) (En inglés). Algunas cosas que debes tener en cuenta son:
+* La cámara que se usa es ARCamera, una cámara propia de trascendentAR.
+* La clase principal o _main_ como se llamó en este caso, acepta un objeto ARToolKitManager en el constructor, este se envía desde AndroidLauncher.
+* Siempre revisar si el módulo de realidad aumentada está funcionando usando `arManager.arRunning()`
+* G3DB es el formato de modelos 3D que maneja libGDX, se puede convertir desde otros formatos como FBX o OBJ a G3DB usando [esta herramienta](https://github.com/libgdx/fbx-conv) de libGDX. Pero hay que tener en cuenta que tiene limitaciones, mayor información [aquí](https://github.com/libgdx/libgdx/wiki/Importing-Blender-models-in-LibGDX).
 
 ## Correr la aplicacion
 
@@ -158,3 +208,7 @@ NOTA: También puedes resumir los 2 pasos anteriores en una sola línea de conso
 
 ## Disfruta
 Apunta la cámara al patrón y observa la magia.
+
+<center>
+<img src="images/simpleapp_output.jpg" alt="Bello resultado">
+</center>

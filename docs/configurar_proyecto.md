@@ -6,7 +6,7 @@ lang: es
 ref: simple_app
 ---
 
-Al final de este tutorial podrás crear una aplicacion de realidad aumentada para android
+Al final de este tutorial tendrás unproyecto listo para crear una aplicación de realidad aumentada
 
 ## Requisitos
 Si ya has usado libGDX antes, es posible que ya tengas la mayoría de Requisitos instalados, solo deberás descargar las libraríasRToolKit. Si no has tenido experiencia con libGDX, para poder completar este tutorial, debes tener instalado en la máquina:
@@ -78,6 +78,9 @@ defaultConfig {
 
 Simplemente extrae las librerías de ARToolKit descargadas en el paso de requerimientos y copia las carpetas dentro del módulo android/libs. El resultado deberá ser similar a la imagen, con los archivos *libARWrapper.so* y *libc++_shared.so* en todas las arquitecturas: **arm64-v8a**, **armeabi**, **armeabi-v7a**, **x86** y **x86_64**
 
+## Añadir la carpeta _Data_ al directorio _assets_
+La carpeta _Data_ es muy importante, quí se encuentra el archivo de configuración de la cámara: _camera_para.dat_. También es donde es necesario colocar los archivos de marcadores (extensión _,patt_). Solo copiala dentro del directorioo _assets_ en el módulo de android
+
 ## Añadir trascendentAR al proyecto
 
 Para esto es necesario modificar el archivo build.gradle que se encuentra en la raíz del proyecto (ver imagen).
@@ -115,4 +118,4 @@ project(":core") {
     }
 }
 ```
-Solo queda sincronizar gradle, un método a prueba de fallos es cerrar y abrir de nuevo el proyecto en el IDE. Probablemente verás un diálogo preguntando si importar cambios en gradle, *presiona importar*
+Solo queda sincronizar gradle, un método a prueba de fallos es cerrar y abrir de nuevo el proyecto en el IDE. Probablemente verás un diálogo preguntando si importar cambios en gradle, **presiona importar**
