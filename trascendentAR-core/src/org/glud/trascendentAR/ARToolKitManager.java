@@ -7,8 +7,9 @@ import com.badlogic.gdx.utils.ArrayMap;
  */
 public interface ARToolKitManager {
     boolean markerVisible(String markerName); //Is marker visible?
-    boolean arIsRunning();
+    boolean arRunning();
     ArrayMap<String,Integer> getMarkers();
     float[] getProjectionMatrix();
     float[] getTransformMatrix(String markerName);
+    void openCameraPreferences();
 }

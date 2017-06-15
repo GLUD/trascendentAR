@@ -14,8 +14,11 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.math.*;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.*;
 import org.glud.trascendentAR.ARCamera;
 import org.glud.trascendentAR.ARToolKitManager;
@@ -40,6 +43,7 @@ public class main extends ApplicationAdapter {
 
 	Stage stage;
 	Image splash_img;
+	Button cameraPrefsButton;
 
 	public main(ARToolKitManager arToolKitManager){
 		this.arToolKitManager = arToolKitManager;
@@ -63,6 +67,8 @@ public class main extends ApplicationAdapter {
 		 */
 		manager = new AssetManager();
 		manager.load("splash.png", Texture.class);
+		manager.load("cam_button_down.png", Texture.class);
+		manager.load("cam_button_up.png", Texture.class);
 		manager.finishLoading(); //Esperar hasta que carge la imagen de splash - Wait until splash image load
 		/* Añade los modelos para ser cargados.
 		 * Note que los modelos no se cargan inmediatamente, se cargan utilizando manager.update() en el metodo render
@@ -85,7 +91,35 @@ public class main extends ApplicationAdapter {
 		//2D
 		stage = new Stage(new ScreenViewport());
 		splash_img = new Image(manager.get("splash.png",Texture.class));
+
+		/* Create a button to open the camera preferences activity. First we define what images will be rendered when up and down
+		 * Crear un botón para abrir la actividad de preferencias de camara. Primero definimos que imagenes mostrar cuando esta arriba y abajo
+		 */
+		Button.ButtonStyle buttonStyle = new Button.ButtonStyle();
+		buttonStyle.up = new Image(manager.get("cam_button_up.png",Texture.class)).getDrawable();
+		buttonStyle.down = new Image(manager.get("cam_button_down.png",Texture.class)).getDrawable();
+		cameraPrefsButton = new Button(buttonStyle);
+		//Damos una posicion en la parte superior derecha de la pantalla
+		cameraPrefsButton.setPosition(stage.getWidth() - 20 - cameraPrefsButton.getHeight(),stage.getHeight() - 20 - cameraPrefsButton.getHeight());
+		/* Recognize when button is clicked and open camera preferences using arToolKitMangaer
+		 * Reconoce cuando el botón se ha presionado y abre preferencias de cámara
+		 */
+		cameraPrefsButton.addListener(new ClickListener(){
+			public void clicked (InputEvent event, float x, float y) {
+				arToolKitManager.openCameraPreferences();
+			}
+		});
+		/* Let's add the splash image to the stage to be rendered while assets load on background
+		 * Note we didn't add the button to stage, it will be added once the assets are done loading
+		 * Añadamos la imagen de presentación (splash) para que se muestre mientras los recursos cargan en segundo plano
+		 * Note que no añadimos el boton al stage, eso se hará una vez los recursos hayan sido cargados
+		 */
 		stage.addActor(splash_img);
+		/*
+		 * Finalmente como tenemos un boton que se puede presionar, debemos hacer que el stage reciba entradas
+		 * Finally as we have a button to be pressed, we need to make stage to receive inputs
+		 */
+		Gdx.input.setInputProcessor(stage);
 	}
 
 	private void createModelsinstances(){
@@ -102,7 +136,7 @@ public class main extends ApplicationAdapter {
 		model = manager.get("wolf.g3db",Model.class);
 		instances.put("wolfMarker",new ModelInstance(model));
 		model = manager.get("koko.g3db",Model.class);
-		instances.put("kokoMarker",new ModelInstance(model));
+		instances.put("hiroMarker",new ModelInstance(model));
 		model = manager.get("watercraft.g3db",Model.class);
 		instances.put("watercraftMarker",new ModelInstance(model));
 		model = manager.get("landscape.g3db",Model.class);
@@ -131,9 +165,11 @@ public class main extends ApplicationAdapter {
 			assetsLoaded = manager.update();
 			if(assetsLoaded){
 				splash_img.remove();
+				stage.addActor(cameraPrefsButton);
 				createModelsinstances();
 			}
 		}else {
+			if(!arToolKitManager.arRunning())return;
 		/*
 		 * Actualizar los controladores de animación
 		 */

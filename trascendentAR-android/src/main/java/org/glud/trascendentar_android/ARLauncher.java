@@ -2,6 +2,7 @@ package org.glud.trascendentar_android;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.PixelFormat;
 import android.util.Log;
@@ -19,6 +20,7 @@ import com.badlogic.gdx.utils.ArrayMap;
 import org.artoolkit.ar.base.ARToolKit;
 import org.artoolkit.ar.base.assets.AssetHelper;
 import org.artoolkit.ar.base.camera.CameraEventListener;
+import org.artoolkit.ar.base.camera.CameraPreferencesActivity;
 import org.artoolkit.ar.base.camera.CaptureCameraPreview;
 import org.glud.trascendentAR.ARToolKitManager;
 import static org.artoolkit.ar.base.camera.CameraPreferencesActivity.TAG;
@@ -187,7 +189,13 @@ public abstract class ARLauncher extends AndroidApplication implements CameraEve
 	}
 
 	@Override
-	public boolean arIsRunning() {
+	public boolean arRunning() {
 		return ARToolKit.getInstance().isRunning();
+	}
+
+	@Override
+	public void openCameraPreferences(){
+		Intent intent = new Intent(this, CameraPreferencesActivity.class);
+		startActivity(intent);
 	}
 }
