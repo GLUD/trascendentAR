@@ -20,7 +20,7 @@ Si ya has usado libGDX antes, es posible que ya tengas la mayoría de Requisitos
 	* Android Build Tools
 * IntelliJ IDEA o Android Studio, cada cual tiene ventajas respecto al otro. Para este caso se usó IntelliJ IDEA.
 * libGDX setup app, se puede descargar de la [página oficial](http://libgdx.badlogicgames.com/download.html)
-* Archivos de configuración Librerías, donde se encuentran las librerías nativas de ARToolKit y el archivo de configuración de la cámara. Descargalo [aquí](/downloads/config_files.zip) <a href="/downloads/config_files.zip" class="icon fa-download"></a>
+* Archivos de configuración Librerías, donde se encuentran las librerías nativas de ARToolKit y el archivo de configuración de la cámara. Descargalo [aquí]({{site.baseurl}}/downloads/config_files.zip) <a href="{{site.baseurl}}/downloads/config_files.zip" class="icon fa-download"></a>
 
 ## Iniciar la aplicación de libGDX
 E ingresar los datos correspondientes incluyendo el camino al SDK de Android, revisa la imagen para guiarte. Observa que únicamente dejé la casilla de Android marcada (Bajo Sub projects). También incluí la extension freetypefont para incluir lindas tipografías en mi aplicación.
