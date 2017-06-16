@@ -8,7 +8,7 @@ ref: simple_app
 
 At the end of this tutorial you will have a project set to start programming an AR application. Source code for this tutorial can be found on [github](https://github.com/Juankz/arSimpleApp). If you have any doubt regarding a file or project organization, go to the source and check it out.
 
-## Requisitos
+## Requirements
 If you have used libGDX before, probably you have most of this stuff installed, you only need to download the ARToolKit native libraries. If you have never worked with libGDX, it is necessaty to have intalled install in your machine:
 
 * JDK 7 o greater
