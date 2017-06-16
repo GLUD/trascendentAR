@@ -56,7 +56,7 @@ Cool, now lets load a marker using the method _loadMarker(String name,String mar
 * The marker patt must always point to the folder _Data_
 * Recomended size is grater than 4 units and less than 100. Actually te maximum value is determined by the parameters given to the libGDX camera by you.
 
-## Using ARToolKit Manager to access augemented reality methods
+## Using ARToolKit Manager to access augmented reality methods
 
 Inside the core module. The following code is well commented and should be enough to be understandable.
 ``` java
