@@ -15,4 +15,4 @@ We are always looking to improve this project, add new functions, tutorials, etc
 If you are not interesting in the modification of the source code but just making cool apps with it, and still want to help us improving it consider making a donation, hence we can make a better product and you can make better apps.
 
 We acept donation through gratipay, just press this button
-<center><script data-gratipay-username="Juankz" src="//grtp.co/v1.js"></script></center>
+<center><script data-gratipay-teamslug="trascendentAR" src="//grtp.co/v2.js"></script></center>
