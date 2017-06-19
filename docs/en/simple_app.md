@@ -6,7 +6,7 @@ lang: en
 ref: simple_app
 ---
 
-If you have reached here, it means you already [configured a project](setting_up_project.html) and are ready to create your first augmented reality application. Remember that source code for this tutorial can be found on [github](https://github.com/Juankz/arSimpleApp). If ypu have any doubt regarding a file or project organization, go to the source and check it out.
+If you have reached here, it means you already [configured a project](setting_up_project.html) and are ready to create your first augmented reality application. Remember that source code for this tutorial can be found on [github](https://github.com/Juankz/arSimpleApp). If you have any doubt regarding a file or project organization, go to the source and check it out.
 
 ## Getting ready with assets
 For any augmented reality application we need two things. First one is a marker which is a file describing a pattern or image that our application is going to track. Second one is a 3D model to show once our marker is visible. Download both of them [here]({{site.baseurl}}/downloads/simpleapp_assets.zip) <a href="{{site.baseurl}}/downloads/simpleapp_assets.zip" class="icon fa-download"></a>
@@ -116,7 +116,7 @@ public class main extends ApplicationAdapter {
 		buttonStyle.up = new Image(assetManager.get("cam_button_up.png",Texture.class)).getDrawable();
 		buttonStyle.down = new Image(assetManager.get("cam_button_down.png",Texture.class)).getDrawable();
 		cameraPrefsButton = new Button(buttonStyle);
-		//Damos una posicion en la parte superior derecha de la pantalla
+		//Give the button a position on the upper right corner
 		cameraPrefsButton.setPosition(stage.getWidth() - 20 - cameraPrefsButton.getHeight(),stage.getHeight() - 20 - cameraPrefsButton.getHeight());
 
 		// Recognize when button is clicked and open camera preferences using arToolKitManger
@@ -195,7 +195,7 @@ public class main extends ApplicationAdapter {
 * The camera used is ARCamera, a variation of perspective camera.
 * Main class or _main_ as I called it, accepts a parameter ARToolKitManager in the constructor, this one is sent by AndroidLauncher.
 * Always check if armodule is running with `arManager.arRunning()`
-* G3DB is a 3D models format used by libGDX, it is posible to convert from other formats like FBX o OBJ a G3DB using [this libGDX tool](https://github.com/libgdx/fbx-conv). But beware of some limitationsm more information [here](https://github.com/libgdx/libgdx/wiki/Importing-Blender-models-in-LibGDX).
+* G3DB is a 3D models format used by libGDX, it is posible to convert from other formats like FBX o OBJ to G3DB using [this libGDX tool](https://github.com/libgdx/fbx-conv). But beware of some limitationsm more information [here](https://github.com/libgdx/libgdx/wiki/Importing-Blender-models-in-LibGDX).
 
 ## Run the app
 
