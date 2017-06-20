@@ -32,6 +32,7 @@ public abstract class ARLauncher extends AndroidApplication implements CameraEve
     public static class MarkerType{
         public static final String SINGLE="single";
 		public static final String MULTI="multi";
+		public static final String NFT="nft";
     }
 
     private FrameLayout mainLayout;
