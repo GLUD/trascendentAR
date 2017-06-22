@@ -20,6 +20,6 @@ public class AndroidLauncher extends ARLauncher {
 		loadMarker("kokoMarker",MarkerType.SINGLE,"Data/koko.patt",8);
 		loadMarker("wolfMarker",MarkerType.SINGLE,"Data/lobo.patt",8);
 		loadMarker("watercraftMarker",MarkerType.SINGLE,"Data/barco.patt",8);
-		loadMarker("logoMarker",MarkerType.NFT,"Data/icon",8);
+		loadMarker("logoMarker",MarkerType.NFT,"Data/icon",0);
 	}
 }
