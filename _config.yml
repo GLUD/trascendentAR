@@ -58,3 +58,5 @@ social:
 markdown: kramdown
 sass:
   style: compressed
+gems:
+  - jekyll-seo-tag
