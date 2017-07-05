@@ -2,10 +2,10 @@
 #
 
 # Site settings
-title: Transendent-AR
+title: Trascendent-AR
 description:
-  es: TrascendentAR integra libGDX con ARToolKit para desarrollar aplicaciones de Realidad Aumentada con la mejor Tecnología Libre.
-  en: TrascendentAR integrates libGDX with ARToolKit to develop Augmented Reality applications with the best Free Technology.
+  es: Crea aplicaciones de Realidad Aumentada con libGDX y ARToolKit
+  en: Develop Augmented Reality applications with libGDX and ARToolKit
 
 owner: GLUD - Grupo GNU/Linux Universidad Distrital FJC # or company name
 first_published: 2017 # if migrating another site, the year of your first publish
