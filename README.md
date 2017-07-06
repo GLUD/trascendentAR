@@ -5,7 +5,7 @@ Crea aplicaciones de Realidad Aumentada con libGDX y ARToolKit.
 Todo lo que necesitas saber sobre usar TrascendentAR para crear aplicaciones de realidad aumentada lo encuentras en nuestro sitio web
 https://glud.github.io/trascendentAR/
 
-## Cual es el plan para ARToolKit
+## Cual es el plan para TrascendentAR
 La planeación de TrascendentAR la encuentras en https://tree.taiga.io/project/juankz-trascendentar/
 
 ## Quiero contribuir al proyecto
