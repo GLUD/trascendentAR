@@ -62,8 +62,9 @@ Este método añade un marcador para ser reconocido por ARToolKit, los parámetr
 Desde el módulo core, se maneja toda la lógica del juego o aplicación. El siguiente código está bien comentado y es suficientemente auto-explicativo:
 
 ``` java
-package org.glud.arsimpleapp;
+package org.glud.arsimpleapp; //Esto cambia según como hallas llamado al paquete usualmente com.persona_empresa.nombre_app
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
@@ -74,7 +75,15 @@ import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import org.glud.trascendentAR.ARCamera;
 import org.glud.trascendentAR.ARToolKitManager;
 
