@@ -9,7 +9,7 @@ ref: simple_app
 If you have reached here, it means you already [configured a project](setting_up_project.html) and are ready to create your first augmented reality application. Remember that source code for this tutorial can be found on [github](https://github.com/Juankz/arSimpleApp). If you have any doubt regarding a file or project organization, go to the source and check it out.
 
 ## Getting ready with assets
-For any augmented reality application we need two things. First one is a marker which is a file describing a pattern or image that our application is going to track. Second one is a 3D model to show once our marker is visible. Download both of them [here]({{site.baseurl}}/downloads/simpleapp_assets.zip) <a href="{{site.baseurl}}/downloads/simpleapp_assets.zip" class="icon fa-download"></a>
+For any augmented reality application we need two things. First one is a marker which is a file describing a pattern or image that our application is going to track. Second one is a 3D model to show once our marker is visible. Download both of them [here]({{site.github.url}}/downloads/simpleapp_assets.zip) <a href="{{site.github.url}}/downloads/simpleapp_assets.zip" class="icon fa-download"></a>
 
 Aditionally on the downloaded folder you will find 2 images _cam_button_down.png_ and _cam_button_up.png_ those will be used to create a button connecting to camera settings for adjust of resolution and what type of camera will be used (front or rear)
 

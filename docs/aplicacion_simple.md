@@ -9,7 +9,7 @@ ref: simple_app
 Si has llegado aquí, significa que ya [configuraste un proyecto](aplicacion_simple.html) y estás listo para crear tu primera aplicación de realidad aumentada. Recuerda que el código de este tutorial lo puedes encontrar en [github](https://github.com/Juankz/arSimpleApp). Por si tienes alguna duda con algún paso, puedes ir al código fuente y revisar por tu cuenta.
 
 ## Alistando los recursos
-Para cualquier aplicación de realidad aumentada con ARToolKit necesitamos 2 cosas: La primera es un marcador el cual es un archivo que describe un patrón o imagen que nuestra applicación deberá reconocer. La segunda es un modelo 3D para desplegar una vez que el marcador esté visible. Descargalos [aquí]({{site.baseurl}}/downloads/simpleapp_assets.zip) <a href="{{site.baseurl}}/downloads/simpleapp_assets.zip" class="icon fa-download"></a>
+Para cualquier aplicación de realidad aumentada con ARToolKit necesitamos 2 cosas: La primera es un marcador el cual es un archivo que describe un patrón o imagen que nuestra applicación deberá reconocer. La segunda es un modelo 3D para desplegar una vez que el marcador esté visible. Descargalos [aquí]({{site.github.url}}/downloads/simpleapp_assets.zip) <a href="{{site.github.url}}/downloads/simpleapp_assets.zip" class="icon fa-download"></a>
 
 ## Añadir código
 Trascendentar incluye todos los métodos para inicializar una aplicación en android incluyendo la cámara, la capa de gráficos e implementando el manejo necesario cuando la aplicacion entra en pausa o cierra, así no tienes que preocuparte por esto.

@@ -1,9 +1,9 @@
 <!-- Header -->
 <header id="header"{% if page.layout == 'landing' %} class="alt"{% endif %}>
   {%if page.lang != 'es' %}
-  <h1><a href="{{ site.baseurl | append: '/index_' | append: page.lang | append: '.html'}}">{{ site.title }}</a></h1>
+  <h1><a href="{{ site.github.url | append: '/index_' | append: page.lang | append: '.html'}}">{{ site.title }}</a></h1>
   {% else %}
-  <h1><a href="{{ site.baseurl }}/index.html">{{ site.title }}</a></h1>
+  <h1><a href="{{ site.github.url }}/index.html">{{ site.title }}</a></h1>
   {% endif %}
   <nav id="nav">
     <ul>
@@ -20,7 +20,7 @@
             {% for my_page in our_pages %}
             {% if my_page.title %}
 	    {% unless my_page.url contains 'docs' or my_page.title == "Referencia" %}
-            <li><a href="{{ my_page.url | prepend: site.baseurl }}">{{ my_page.title }}</a></li>
+            <li><a href="{{ my_page.url | prepend: site.github.url }}">{{ my_page.title }}</a></li>
 	    {% endunless %}
             {% endif %}
             {% endfor %}

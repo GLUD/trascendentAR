@@ -4,7 +4,7 @@
         {% for p in our_pages%}
   	     {% if p.url contains 'docs' %}
           <li>
-            <a {% if p.url == page.url %}class="button special"{% else %}class="button"{% endif %} href="{{ p.url | prepend: site.baseurl }}">{{ p.title }}</a>
+            <a {% if p.url == page.url %}class="button special"{% else %}class="button"{% endif %} href="{{ p.url | prepend: site.github.url }}">{{ p.title }}</a>
           </li>
   	      {% endif %}
         {% endfor %}
