@@ -8,13 +8,12 @@ layout: default
     <p>{{ page.description }}</p>
   </header>
 
-  <section class="wrapper style5">
-    <div class="inner">
-      {% include side_menu.html %}
+  <section class="wrapper style5 doc-page">
+    {% include side_menu.html %}
+    <div class="inner doc-article">
       <br>
       {{ content }}
       <br>
-      {% include side_menu.html %}
     </div>
   </section>
 

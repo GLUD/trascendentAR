@@ -1,12 +1,14 @@
-<div class="row">
-  <ul class="actions small">
-    {% assign our_pages = site.pages | where:"lang",page.lang %}
-        {% for p in our_pages%}
-  	     {% if p.url contains 'docs' %}
-          <li>
-            <a {% if p.url == page.url %}class="button special"{% else %}class="button"{% endif %} href="{{ p.url | prepend: site.github.url }}">{{ p.title }}</a>
-          </li>
-  	      {% endif %}
-        {% endfor %}
-  </ul>
-</div>
+<nav class="side-menu">
+  <div class="row">
+    <ul>
+      {% assign our_pages = site.pages | where:"lang",page.lang %}
+          {% for p in our_pages%}
+    	     {% if p.url contains 'docs' %}
+            <li>
+              <a href="{{ p.url | prepend: site.github.url }}">{{ p.title }}</a>
+            </li>
+    	      {% endif %}
+          {% endfor %}
+    </ul>
+  </div>
+</nav>

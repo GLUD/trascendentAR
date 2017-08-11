@@ -1843,3 +1843,22 @@ $baseurl: '{{ site.github.url }}/images';
 		color: #ef5e4a;
 		font-variant: small-caps;
 	}
+
+.doc-page{
+	display:flex;
+ 	flex-direction: row;
+  flex-wrap: wrap;
+}
+.side-menu{
+	flex:1 1 20vw;
+ padding: 1em;
+ border-right:2px solid lightgray;
+ margin-right:2em;
+	li{
+		list-style: inside;
+	}
+}
+
+.doc-article{
+	flex: 4 auto;
+}
