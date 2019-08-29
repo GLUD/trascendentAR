@@ -39,7 +39,7 @@ Posteriormente debe aparecer la captura en tiempo real de la cámara que se esta
 
 El siguiente paso se trata de apuntar la cámara directamente al marcador tratando de que este ocupe toda el área de la pantalla. Al hacer esto, el borde de la imagen será resaltado con una línea de color rojo y verde.
 <span class="image fit">
-  ![Image4](images/ima4.jpg)
+  <img src="https://raw.githubusercontent.com/GLUD/trascendentAR/gh-pages/docs/images/ima4.jpg" alt="">
 </span>
 
 Se debe rotar y acomodar el marcador con respecto a la cámara, hasta que la esquina superior izquierda de este, se vea resaltado por una línea roja, y la esquina inferior derecha por una línea verde. Al estar acomodado solo falta presionar el botón izquierdo del ratón (dar click) para que se genere una captura de la imagen.
