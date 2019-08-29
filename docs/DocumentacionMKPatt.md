@@ -17,21 +17,21 @@ Los marcadores deben ser construidos bajo ciertos parámetros:
 Para versiones de ARToolKit v4.x se puede hacer uso de marcadores que contienen una malla de cuadros blancos y negros similares a los códigos QR en lugar de la típica imagen central que poseen los marcadores. Estos patrones son útiles para reducir el tiempo de carga cuando la cantidad implementada en la aplicación es considerable.
 
 <span class="image fit">
-  ![Image1](images/ima1.jpg)
+  <img src="https://raw.githubusercontent.com/GLUD/trascendentAR/gh-pages/docs/images/ima1.jpg" alt="">
 </span>
 
 ## Creando nuevos marcadores
 Las medidas que por defecto maneja ARToolKit para los marcadores son las siguientes y son importantes para que la aplicación reconozca los patrones sin problemas.
 
 <span class="image fit">
-  ![Image2](images/ima2.png)
+  <img src="https://raw.githubusercontent.com/GLUD/trascendentAR/gh-pages/docs/images/ima2.png" alt="">
 </span>
 
 ## Usando la herramienta mk_patt
 El uso de esta utilidad es bastante sencillo. Para comenzar, desde una terminal de comandos (ya sea en Windows, Mac OS o Linux) dirigirse hasta el directorio donde se encuentra ARToolKit y en la carpeta bin ejecutar el binario mk_patt. A continuación se ejemplifica el proceso mediante una imagen:
 
 <span class="image fit">
-  ![Image3](images/ima3.png)
+  <img src="https://raw.githubusercontent.com/GLUD/trascendentAR/gh-pages/docs/images/ima3.png" alt="">
 </span>
 
 Al arrancar, la aplicación solicita el archivo con los parámetros de la cámara que se va a usar para programar los marcadores. Para usar los parámetros por defecto simplemente se debe presionar Enter.
